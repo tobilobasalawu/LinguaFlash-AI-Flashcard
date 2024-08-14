@@ -1,7 +1,6 @@
 //This will handle our Stripe checkout process
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
-import { isAuthenticated } from '../auth/authMiddleware' // You'd need to create this
 
 const formatAmountForStripe = (amount, currency) => {
   return Math.round(amount * 100)
@@ -12,10 +11,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 })
 
 export async function POST(req) {
-  if (!isAuthenticated(req)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
   try {
     const params = {
       mode: 'subscription',
@@ -58,35 +53,19 @@ export async function POST(req) {
 }
 
 export async function GET(req) {
-  if (!isAuthenticated(req)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const searchParams = req.nextUrl.searchParams
+  const session_id = searchParams.get('session_id')
 
   try {
-    // Fetch Stripe account details
-    const account = await stripe.accounts.retrieve();
-    
-    // Fetch recent payments (adjust limit as needed)
-    const payments = await stripe.paymentIntents.list({ limit: 10 });
+    if (!session_id) {
+      throw new Error('Session ID is required')
+    }
 
-    return NextResponse.json({
-      account: {
-        id: account.id,
-        business_type: account.business_type,
-        charges_enabled: account.charges_enabled,
-        payouts_enabled: account.payouts_enabled,
-        // Add other relevant account details
-      },
-      recentPayments: payments.data.map(payment => ({
-        id: payment.id,
-        amount: payment.amount,
-        status: payment.status,
-        created: payment.created,
-        // Add other relevant payment details
-      }))
-    })
+    const checkoutSession = await stripe.checkout.sessions.retrieve(session_id)
+
+    return NextResponse.json(checkoutSession)
   } catch (error) {
-    console.error('Error retrieving Stripe account and payment details:', error)
+    console.error('Error retrieving checkout session:', error)
     return NextResponse.json({ error: { message: error.message } }, { status: 500 })
   }
 }
