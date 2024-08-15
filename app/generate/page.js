@@ -49,4 +49,13 @@ export default function Generate() {
       setOpen(false)
     }
 
+    const saveFlashcards = () => {
+      if (!name) {
+        alert('Please enter a name for your flashcards')
+        return
+      }
+    }
+
+    const batch = writeBatch(db)
+    const userDocRef = doc(collection(db, 'users'),  user.id)
 }
