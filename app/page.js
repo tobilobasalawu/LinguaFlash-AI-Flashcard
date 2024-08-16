@@ -6,6 +6,7 @@ import { useUser } from '@clerk/nextjs'
 import { Container, TextField, Button, Typography, Box, Grid, Card, CardContent, AppBar, Toolbar, Select, MenuItem, InputLabel, FormControl } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import languages from '../data/languages.json'
+// import Head from "next/head";
 
 export default function Generate() {
   const { isLoaded, isSignedIn, user } = useUser()
@@ -74,6 +75,12 @@ export default function Generate() {
 
   return (
     <Container maxWidth="md">
+    
+//       <Head>
+//         <title>Flashcard App</title>
+//         <meta name="description" content="Flashcard App" />
+//       </Head>
+    
       <AppBar position='static'>
         <Toolbar>
           <Typography variant='h6' style={{ flexGrow: 1 }}>LingoFlash</Typography>
