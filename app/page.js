@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { Container, TextField, Button, Typography, Box, Grid, Card, CardContent, AppBar, Toolbar, Select, MenuItem, InputLabel, FormControl } from '@mui/material'
 import { useRouter } from 'next/navigation'
@@ -70,6 +70,12 @@ export default function Generate() {
   const handleLevelChange = (event) => {
     setSelectedLevel(event.target.value);
   };
+
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      router.push('/sign-in')
+    }
+  }, [isLoaded, isSignedIn, router])
 
   // Firebase storage stuff
 
