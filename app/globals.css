@@ -72,11 +72,11 @@
 /* ANIMATIONS */
 /* Content animations for both cards */
 .hero-card::before {
-  animation: heroCardText 20.5s steps(10) infinite;
+  animation: heroCardText 20.5s steps(10) forwards infinite;
 }
 
 .hero-card-2::before {
-  animation: heroCardText 20s steps(10) infinite;
+  animation: heroCardText 20s steps(10) forwards infinite;
 }
 
 /* Card position animations */
@@ -127,10 +127,10 @@
     content: "Привіт!";
   }
   90%,
-  95% {
+  90% {
     content: "ہیلو!";
   }
-  95%,
+  100%,
   100% {
     content: "Xin chào!";
   }
