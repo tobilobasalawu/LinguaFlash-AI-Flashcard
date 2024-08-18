@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import { useState } from 'react'
 import { useUser } from '@clerk/nextjs'
-import { Container, TextField, Button, Typography, Box, Grid, Card, CardContent, AppBar, Toolbar, Select, MenuItem, InputLabel, FormControl } from '@mui/material'
+import { Container, TextField, Button, Typography, Box, Grid, Card, CardContent, AppBar, Toolbar, Select, MenuItem, InputLabel, FormControl, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, CardActionArea } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import languages from '../data/languages.json'
 import Head from "next/head";
@@ -15,7 +15,8 @@ export default function Generate() {
   const [text, setText] = useState('')
   const [language, setLanguage] = useState('')
   const [difficulty, setDifficulty] = useState('')
-  const [Open, SetOpen] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [name, setName] = useState('')
   const router = useRouter()
 
   const handleSubmit = async () => {
@@ -49,10 +50,10 @@ export default function Generate() {
     }
   }
 
-  const handleCardClick = (id) => {
+  const handleCardClick = (index) => {
     SetFlipped((prev) => ({
       ...prev,
-      [id]: !prev[id]
+      [index]: !prev[index]
     }))
   }
 
@@ -63,15 +64,34 @@ export default function Generate() {
     setOpen(false)
   }
 
-  const handleLanguageChange = (event) => {
-    setSelectedLanguage(event.target.value);
-  };
+  const saveFlashcards = async () => {
+    const batch = writeBatch(db)
+    const userDocRef = doc(collection(db, 'users'), user.id)
+    const docSnap = await getDoc(userDocRef)
 
-  const handleLevelChange = (event) => {
-    setSelectedLevel(event.target.value);
-  };
+    if (docSnap.exists()) {
+      const collections = docSnap.data().flashcards || []
+      if (collections.find((f) => f.name === name)) {
+        alert('A collection with that name already exists. Please enter a different name.')
+        return
+      } else {
+        collections.push({ name })
+        batch.set(userDocRef, { flashcards: collections }, { merge: true })
+      }
+    } else {
+      batch.set(userDocRef, { flashcards: [{ name }] })
+    }
 
-  // Firebase storage stuff
+    const colRef = collection(userDocRef, name)
+    flashcards.forEach((flashcard) => {
+      const cardDocRef = doc(colRef)
+      batch.set(cardDocRef, flashcard)
+    })
+
+    await batch.commit()
+    handleClose()
+    router.push('flashcards')
+  }
 
   return (
     <>
@@ -159,18 +179,90 @@ export default function Generate() {
               {flashcards.map((flashcard, index) => (
                 <Grid item xs={12} sm={6} md={4} key={index}>
                   <Card>
-                    <CardContent>
-                      <Typography variant="h6">Front:</Typography>
-                      <Typography>{flashcard.front}</Typography>
-                      <Typography variant="h6" sx={{ mt: 2 }}>Back:</Typography>
-                      <Typography>{flashcard.back}</Typography>
-                    </CardContent>
+                    <CardActionArea onClick={() => handleCardClick(index)}>
+                      <CardContent>
+                        <Box sx={{
+                          perspective: '1000px',
+                          height: '150px',
+                        }}>
+                          <Box sx={{
+                            transition: 'transform 0.8s',
+                            transformStyle: 'preserve-3d',
+                            position: 'relative',
+                            width: '100%',
+                            height: '100%',
+                            transform: flipped[index] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                          }}>
+                            <Box sx={{
+                              position: 'absolute',
+                              width: '100%',
+                              height: '100%',
+                              backfaceVisibility: 'hidden',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              padding: 2,
+                              boxSizing: 'border-box',
+                            }}>
+                              <Typography variant="h6" component="div">
+                                {flashcard.front}
+                              </Typography>
+                            </Box>
+                            <Box sx={{
+                              position: 'absolute',
+                              width: '100%',
+                              height: '100%',
+                              backfaceVisibility: 'hidden',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              padding: 2,
+                              boxSizing: 'border-box',
+                              transform: 'rotateY(180deg)',
+                            }}>
+                              <Typography variant="h6" component="div">
+                                {flashcard.back}
+                              </Typography>
+                            </Box>
+                          </Box>
+                        </Box>
+                      </CardContent>
+                    </CardActionArea>
                   </Card>
                 </Grid>
               ))}
             </Grid>
+            <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+              <Button variant="contained" color="secondary" onClick={handleOpen}>
+                Save Flashcards
+              </Button>
+            </Box>
           </Box>
         )}
+
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Save Flashcards</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Enter a name for your flashcard collection.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Collection Name"
+              type="text"
+              fullWidth
+              variant="outlined"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="error">Cancel</Button>
+            <Button onClick={saveFlashcards} color="secondary">Save</Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     </>
   )
