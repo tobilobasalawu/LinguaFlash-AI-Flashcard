@@ -157,7 +157,7 @@
     opacity: 1;
   }
   50% {
-    transform: rotate(-10deg) translateX(-50px) translateY(-100px);
+    transform: rotate(-10deg) translateX(-20px) translateY(-70px);
   }
   89% {
     opacity: 1;
@@ -181,6 +181,29 @@
   }
   100% {
     z-index: 50;
+  }
+}
+
+@screen lg {
+  @keyframes heroCard {
+    0% {
+      transform: rotate(0deg) translate(0);
+      z-index: 50;
+      opacity: 1;
+    }
+    50% {
+      transform: rotate(-10deg) translateX(-50px) translateY(-100px);
+    }
+    89% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 0;
+    }
+    100% {
+      transform: rotate(0deg) translate(0);
+      z-index: 40;
+    }
   }
 }
 
