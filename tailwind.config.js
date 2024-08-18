@@ -27,6 +27,8 @@ module.exports = {
         blue: "linear-gradient(90deg, #A385FF, #C2AEFF)",
         "noisy-card":
           "url(/images/noise/noise.svg), linear-gradient(-125deg, #8864F4 14%, #D668AA 100%), linear-gradient(#A385FF, #D0C1FC)",
+        primary:
+          "linear-gradient(-125deg, #8864F4 14%, #D668AA 100%), linear-gradient(#A385FF, #D0C1FC)",
       },
     },
   },

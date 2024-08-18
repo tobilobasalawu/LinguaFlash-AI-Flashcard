@@ -2,11 +2,12 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
-import useViewport from "@/hooks/useViewport"
+import { useContext } from "react"
+import { AppContext } from "@/contexts/Appcontext"
 
 export default function Header() {
   const [isMobileNavMenuOpen, setIsMobileNavMenuOpen] = useState(false)
-  const [viewport] = useViewport()
+  const { viewport } = useContext(AppContext)
   const canShowNav = isMobileNavMenuOpen || viewport.isPc
 
   function toggleMobileNavMenuVisibility() {

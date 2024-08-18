@@ -69,6 +69,19 @@
     url("/fonts/manrope-v15-latin-700.ttf") format("truetype");
 }
 
+/* BENEFITS */
+.illustration > svg {
+  width: fit;
+  height: 180px;
+}
+
+@screen lg {
+  .illustration > svg {
+    width: fit;
+    height: 250px;
+  }
+}
+
 /* ANIMATIONS */
 /* Content animations for both cards */
 .hero-card::before {
