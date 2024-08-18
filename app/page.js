@@ -1,13 +1,13 @@
 'use client'
 import Image from 'next/image'
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
+import { SignedIn, SignedOut, UserButton, useUser, useAuth } from '@clerk/nextjs'
 import { useState } from 'react'
-import { useUser } from '@clerk/nextjs'
-import { useAuth } from '@clerk/nextjs'
 import { Container, TextField, Button, Typography, Box, Grid, Card, CardContent, AppBar, Toolbar, Select, MenuItem, InputLabel, FormControl, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, CardActionArea } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import languages from '../data/languages.json'
 import Head from "next/head";
+import { getFirestore, doc, collection, writeBatch, getDoc } from 'firebase/firestore';
+import { db } from '@/firebase'; // Adjust this import path as needed
 
 export default function Generate() {
   const { isLoaded, isSignedIn, user } = useUser()
@@ -95,9 +95,14 @@ export default function Generate() {
       batch.set(cardDocRef, flashcard)
     })
 
-    await batch.commit()
-    handleClose()
-    router.push('flashcards')
+    try {
+      await batch.commit()
+      handleClose()
+      router.push('/flashcards')
+    } catch (error) {
+      console.error('Error saving flashcards:', error)
+      alert('An error occurred while saving flashcards. Please try again.')
+    }
   }
 
   return (

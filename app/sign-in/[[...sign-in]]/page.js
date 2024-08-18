@@ -6,7 +6,7 @@ export default function SignInPage() {
         <AppBar position='static'>
             <Toolbar>
                 <Typography variant='h6' sx={{ flexGrow: 1 }}>
-                    LingoFlash
+                    LinguaFlash
                 </Typography>
                 <Button sx={{ color: 'white', backgroundColor: 'black' }}>
                     <Link href='/sign-in'>Login</Link>
