@@ -4,7 +4,10 @@ import Link from "next/link"
 
 export default function Team() {
   return (
-    <section className="flex flex-col justify-center items-center px-5 md:px-10 py-20 gap-10">
+    <section
+      id="team"
+      className="flex flex-col justify-center items-center px-5 md:px-10 py-20 gap-10"
+    >
       <h2 className="w-full max-w-[400px] md:max-w-[912px] font-dela-gothic-one text-4xl lg:text-5xl md:text-center !leading-none tracking-normal pb-2 text-transparent bg-primary bg-clip-text">
         Meet the amazing team
       </h2>

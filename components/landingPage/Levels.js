@@ -2,7 +2,10 @@ import levels from "@/data/levels"
 
 export default function Levels() {
   return (
-    <section className="flex flex-col justify-center items-center px-5 md:px-10 py-20 gap-5 md:gap-10 bg-noisy-card">
+    <section
+      id="levels"
+      className="flex flex-col justify-center items-center px-5 md:px-10 py-20 gap-5 md:gap-10 bg-noisy-card"
+    >
       <h2 className="font-dela-gothic-one text-4xl lg:text-5xl !leading[100%] pb-2 text-black">
         Difficulty Levels
       </h2>

@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* caramel-regular - latin */
 @font-face {
   font-display: swap;

@@ -35,7 +35,7 @@ export default function Header() {
           <ul className="flex flex-col lg:flex-row lg:gap-8 w-32 lg:w-fit overflow-hidden">
             <li className="hover:bg-pink/40 lg:hover:bg-transparent lg:hover:border-b lg:hover:border-pink pb-[2px]">
               <Link
-                href="/"
+                href="./#levels"
                 className="block w-full h-fit p-3 lg:w-fit lg:p-0 font-manrope text-base text-white font-medium leading-none"
               >
                 Levels
@@ -43,7 +43,7 @@ export default function Header() {
             </li>
             <li className="hover:bg-pink/40 lg:hover:bg-transparent lg:hover:border-b lg:hover:border-pink pb-[2px]">
               <Link
-                href="/"
+                href="./#team"
                 className="block w-full h-fit p-3 lg:w-fit lg:p-0 font-manrope text-base text-white font-medium leading-none border-t border-blue lg:border-t-0"
               >
                 Team
@@ -53,9 +53,12 @@ export default function Header() {
         </nav>
       )}
 
-      <button className="font-manrope font-bold -tracking-[.02em] text-base !leading-none text-white border border-pink rounded-lg py-2 px-4 lg:py-[12px] lg:px-6 ml-auto lg:ml-0">
+      <Link
+        href="/sign-in"
+        className="font-manrope font-bold -tracking-[.02em] text-base !leading-none text-white border border-pink rounded-lg py-2 px-4 lg:py-[12px] lg:px-6 ml-auto lg:ml-0"
+      >
         Login
-      </button>
+      </Link>
 
       <button
         type="button"
