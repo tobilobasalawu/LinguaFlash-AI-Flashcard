@@ -4,16 +4,16 @@ import StackedFlashCards from "../StackedFlashcards"
 
 export default function Hero() {
   return (
-    <section className="flex p-20">
+    <section className="flex flex-col md:flex-row gap-24 px-5 pt-[153px] lg:pt-[169px] pb-20 md:px-10">
       {/* LEFT */}
-      <div className="flex flex-col gap-10 w-1/2">
-        <div className="flex flex-col gap-6">
-          <h1 className="font-dela-gothic-one text-[80px] text-white !leading-none -tracking-[.02em]">
+      <div className="flex flex-col gap-6 ld:gap-10 w-full md:w-1/2">
+        <div className="flex flex-col gap-4 lg:gap-6">
+          <h1 className="font-dela-gothic-one text-6xl lg:text-[80px] text-white !leading-none -tracking-[.02em]">
             Learn new languages in a{" "}
-            <span className="relative font-caramel text-[120px]">
+            <span className="relative font-caramel text-[80px] lg:text-[120px]">
               flash
               <svg
-                className="absolute top-[22%] left-[-10%] w-[190px] h-[92px]"
+                className="absolute top-[22%] left-[-10%] w-[120px] h-[62px] lg:w-[190px] lg:h-[92px]"
                 aria-hidden="true"
                 width="190"
                 height="92"
@@ -66,13 +66,13 @@ export default function Hero() {
               </svg>
             </span>
           </h1>
-          <p className="font-manrope font-medium text-lg text-off-white !leading-normal">
+          <p className="font-manrope font-medium text-base lg:text-lg text-off-white !leading-normal">
             Master languages faster with AI-generated flashcards tailored for
             your learning needs for free!
           </p>
         </div>
 
-        <div className="flex items-end gap-10">
+        <div className="flex items-end gap-6 lg:gap-10">
           <div>
             <div className="flex">
               <Image
@@ -82,22 +82,22 @@ export default function Hero() {
                 alt="Ligtning bolt"
                 fetchPriority="high"
               />
-              <p className="font-dela-gothic-one text-white text-[24px] -tracking-[-.02em] !leading-none">
+              <p className="font-dela-gothic-one text-white text-xl lg:text-[24px] -tracking-[-.02em] !leading-none">
                 50 +
               </p>
             </div>
-            <p className="mt-1 font-manrope text-off-white text-lg leading-none tracking-[.01em]">
+            <p className="mt-1 font-manrope text-off-white text-base lg:text-lg leading-none tracking-[.01em]">
               Languages
             </p>
           </div>
-          <button className="font-manrope font-bold -tracking-[.02em] text-lg !leading-none text-black bg-pink rounded-2xl py-[18px] px-9">
+          <button className="font-manrope font-bold -tracking-[.02em] text-base lg:text-lg !leading-none text-black bg-pink rounded-xl lg:rounded-2xl py-4 px-6 lg:py-[18px] lg:px-9 hover:bg-none hover:bg-fuchsia-400 transition-colors duration-100">
             Get started
           </button>
         </div>
       </div>
 
       {/* RIGHT */}
-      <div className="grid place-content-center w-1/2">
+      <div className="grid place-content-start md:place-content-center w-full md:w-1/2">
         <StackedFlashCards />
       </div>
     </section>
