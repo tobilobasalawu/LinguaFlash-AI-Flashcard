@@ -3,6 +3,7 @@
 import "./globals.css"
 import { ClerkProvider } from "@clerk/nextjs"
 import AppContextProvider from "@/contexts/Appcontext"
+import Footer from "@/components/Footer"
 
 export default function RootLayout({ children }) {
   return (
@@ -17,7 +18,10 @@ export default function RootLayout({ children }) {
             />
             <title>LinguaFlash</title>
           </head>
-          <body className="bg-black">{children}</body>
+          <body className="bg-black">
+            {children}
+            <Footer />
+          </body>
         </AppContextProvider>
       </html>
     </ClerkProvider>
