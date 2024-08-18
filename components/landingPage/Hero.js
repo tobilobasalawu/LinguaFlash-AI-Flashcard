@@ -4,7 +4,7 @@ import StackedFlashCards from "../StackedFlashcards"
 
 export default function Hero() {
   return (
-    <section className="flex flex-col md:flex-row gap-24 px-5 pt-[153px] lg:pt-[169px] pb-20 md:px-10">
+    <section className="flex flex-col md:flex-row gap-24 md:gap-10 px-5 pt-[153px] lg:pt-[169px] pb-20 md:px-10">
       {/* LEFT */}
       <div className="flex flex-col gap-6 ld:gap-10 w-full md:w-1/2">
         <div className="flex flex-col gap-4 lg:gap-6">

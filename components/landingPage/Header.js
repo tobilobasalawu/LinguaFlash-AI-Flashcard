@@ -14,7 +14,7 @@ export default function Header() {
     setIsMobileNavMenuOpen((prevValue) => !prevValue)
   }
   return (
-    <header className="fixed w-full bg-black z-[999] flex justify-between items-center gap-5 px-5 md:px-10 py-3 lg:px-20 lg:py-5 border-b border-dark-gray">
+    <header className="fixed w-full bg-black z-[999] flex justify-between items-center gap-5 px-5 md:px-10 py-3 lg:py-5 border-b border-dark-gray">
       <Link href="/">
         <Image
           src="/images/logo.svg"
@@ -30,7 +30,7 @@ export default function Header() {
       </Link>
 
       {canShowNav && (
-        <nav className="absolute right-5 md:right-10 top-[calc(100%_+_12px)] lg:static bg-dark-gray/50 backdrop-blur-[2px] rounded-lg border border-blue lg:border-none">
+        <nav className="absolute right-5 md:right-10 top-[calc(100%_+_12px)] lg:static bg-dark-gray/50 lg:bg-transparent backdrop-blur-[2px] rounded-lg border border-blue lg:border-none">
           <ul className="flex flex-col lg:flex-row lg:gap-8 w-32 lg:w-fit overflow-hidden">
             <li className="hover:bg-pink/40 lg:hover:bg-transparent lg:hover:border-b lg:hover:border-pink pb-[2px]">
               <Link
