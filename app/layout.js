@@ -18,9 +18,11 @@ export default function RootLayout({ children }) {
             />
             <title>LinguaFlash</title>
           </head>
-          <body className="bg-black">
-            {children}
-            <Footer />
+          <body className="flex justify-center bg-black">
+            <div className="flex-none w-full max-w-[1536px]">
+              {children}
+              <Footer />
+            </div>
           </body>
         </AppContextProvider>
       </html>

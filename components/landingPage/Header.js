@@ -15,7 +15,7 @@ export default function Header() {
     setIsMobileNavMenuOpen((prevValue) => !prevValue)
   }
   return (
-    <header className="fixed w-full bg-black z-[999] flex justify-between items-center gap-5 px-5 md:px-10 py-3 lg:py-5 border-b border-dark-gray">
+    <header className="fixed w-full max-w-[1536px] bg-black z-[999] flex justify-between items-center gap-5 px-5 md:px-10 py-3 lg:py-5 border-b border-dark-gray">
       <Link href="/">
         <Image
           src="/images/logo.svg"
