@@ -24,7 +24,7 @@ export default function Benefits() {
               } grid place-content-center w-full md:w-1/2`}
             >
               <div className="flex flex-col gap-3 lg:gap-5 max-w-[500px]">
-                <h2 className="font-dela-gothic-one text-4xl lg:text-5xl !leading-none pb-2 text-transparent bg-primary bg-clip-text">
+                <h2 className="font-dela-gothic-one text-4xl lg:text-5xl !leading-none tracking-normal pb-2 text-transparent bg-primary bg-clip-text">
                   {heading}
                 </h2>
                 <p className="font-manrope font-medium text-base lg:text-lg !leading-normal tracking-[.02em] text-off-white">
