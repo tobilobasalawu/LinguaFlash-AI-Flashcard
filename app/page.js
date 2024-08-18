@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import { useState } from 'react'
 import { useUser } from '@clerk/nextjs'
+import { useAuth } from '@clerk/nextjs'
 import { Container, TextField, Button, Typography, Box, Grid, Card, CardContent, AppBar, Toolbar, Select, MenuItem, InputLabel, FormControl, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, CardActionArea } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import languages from '../data/languages.json'
@@ -10,6 +11,7 @@ import Head from "next/head";
 
 export default function Generate() {
   const { isLoaded, isSignedIn, user } = useUser()
+  const { userId } = useAuth()
   const [flashcards, setFlashcards] = useState([])
   const [flipped, SetFlipped] = useState([])
   const [text, setText] = useState('')
@@ -20,6 +22,11 @@ export default function Generate() {
   const router = useRouter()
 
   const handleSubmit = async () => {
+    if (!userId) {
+      alert('Please sign in to generate flashcards.')
+      return
+    }
+
     if (!text.trim() || !language || !difficulty) {
       alert('Please fill in all fields to generate flashcards.')
       return
@@ -118,56 +125,72 @@ export default function Generate() {
             Generate Flashcards
           </Typography>
 
-          <FormControl fullWidth sx={{ mb: 2 }}>
-            <InputLabel id="language-label">Select Language</InputLabel>
-            <Select
-              labelId="language-label"
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-              label="Select Language"
-            >
-              {Object.entries(languages).map(([name, code]) => (
-                <MenuItem key={code} value={code}>{name}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          {isSignedIn ? (
+            <>
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel id="language-label">Select Language</InputLabel>
+                <Select
+                  labelId="language-label"
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
+                  label="Select Language"
+                >
+                  {Object.entries(languages).map(([name, code]) => (
+                    <MenuItem key={code} value={code}>{name}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
 
-          <FormControl fullWidth sx={{ mb: 2 }}>
-            <InputLabel id="difficulty-label">Select Difficulty</InputLabel>
-            <Select
-              labelId="difficulty-label"
-              value={difficulty}
-              onChange={(e) => setDifficulty(e.target.value)}
-              label="Select Difficulty"
-            >
-              <MenuItem value={'A1'}>A1 - Beginner</MenuItem>
-              <MenuItem value={'A2'}>A2 - Elementary</MenuItem>
-              <MenuItem value={'B1'}>B1 - Intermediate</MenuItem>
-              <MenuItem value={'B2'}>B2 - Upper Intermediate</MenuItem>
-              <MenuItem value={'C1'}>C1 - Advanced</MenuItem>
-              <MenuItem value={'C2'}>C2 - Proficient</MenuItem>
-            </Select>
-          </FormControl>
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel id="difficulty-label">Select Difficulty</InputLabel>
+                <Select
+                  labelId="difficulty-label"
+                  value={difficulty}
+                  onChange={(e) => setDifficulty(e.target.value)}
+                  label="Select Difficulty"
+                >
+                  <MenuItem value={'A1'}>A1 - Beginner</MenuItem>
+                  <MenuItem value={'A2'}>A2 - Elementary</MenuItem>
+                  <MenuItem value={'B1'}>B1 - Intermediate</MenuItem>
+                  <MenuItem value={'B2'}>B2 - Upper Intermediate</MenuItem>
+                  <MenuItem value={'C1'}>C1 - Advanced</MenuItem>
+                  <MenuItem value={'C2'}>C2 - Proficient</MenuItem>
+                </Select>
+              </FormControl>
 
-          <TextField
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            label="Enter any additional info about your level or desired cards"
-            fullWidth
-            multiline
-            rows={4}
-            variant="outlined"
-            sx={{ mb: 2 }}
-          />
+              <TextField
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                label="Enter any additional info about your level or desired cards"
+                fullWidth
+                multiline
+                rows={4}
+                variant="outlined"
+                sx={{ mb: 2 }}
+              />
 
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            fullWidth
-          >
-            Generate Flashcards
-          </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit}
+                fullWidth
+              >
+                Generate Flashcards
+              </Button>
+            </>
+          ) : (
+            <Box sx={{ textAlign: 'center', mt: 4 }}>
+              <Typography variant="h6" gutterBottom>
+                Please sign in to generate and use flashcards.
+              </Typography>
+              <Button href="/sign-in" variant="contained" color="primary" sx={{ mr: 2 }}>
+                Sign In
+              </Button>
+              <Button href="/sign-up" variant="outlined" color="primary">
+                Sign Up
+              </Button>
+            </Box>
+          )}
         </Box>
 
         {flashcards.length > 0 && (
