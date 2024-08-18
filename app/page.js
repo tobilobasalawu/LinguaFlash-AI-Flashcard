@@ -4,6 +4,7 @@ import LearnSlider from "@/components/landingPage/LearnSlider"
 import Benefits from "@/components/landingPage/Benefits"
 import Levels from "@/components/landingPage/Levels"
 import Team from "@/components/landingPage/Team"
+import Cta from "@/components/landingPage/Cta"
 
 export default function LandingPage() {
   return (
@@ -15,6 +16,7 @@ export default function LandingPage() {
         <Benefits />
         <Levels />
         <Team />
+        <Cta />
       </main>
     </>
   )
