@@ -3,161 +3,172 @@
 
 /* caramel-regular - latin */
 @font-face {
-	font-display: swap;
-	font-family: "Caramel";
-	font-style: normal;
-	font-weight: 400;
-	src: url("/fonts/caramel-v7-latin-regular.woff2") format("woff2"),
-		url("/fonts/caramel-v7-latin-regular.ttf") format("truetype");
+  font-display: swap;
+  font-family: "Caramel";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/caramel-v7-latin-regular.woff2") format("woff2"),
+    url("/fonts/caramel-v7-latin-regular.ttf") format("truetype");
 }
 
 /* tiro-devanagari-hindi-regular - latin */
 @font-face {
-	font-display: swap;
-	font-family: "Tiro Devanagari Hindi";
-	font-style: normal;
-	font-weight: 400;
-	src: url("/fonts/tiro-devanagari-hindi-v5-latin-regular.woff2")
-			format("woff2"),
-		url("/fonts/tiro-devanagari-hindi-v5-latin-regular.ttf") format("truetype");
+  font-display: swap;
+  font-family: "Tiro Devanagari Hindi";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/tiro-devanagari-hindi-v5-latin-regular.woff2")
+      format("woff2"),
+    url("/fonts/tiro-devanagari-hindi-v5-latin-regular.ttf") format("truetype");
 }
 
 /* dela-gothic-one-regular - latin */
 @font-face {
-	font-display: swap;
-	font-family: "Dela Gothic One";
-	font-style: normal;
-	font-weight: 400;
-	src: url("/fonts/dela-gothic-one-v16-latin-regular.woff2") format("woff2"),
-		url("/fonts/dela-gothic-one-v16-latin-regular.ttf") format("truetype");
+  font-display: swap;
+  font-family: "Dela Gothic One";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/dela-gothic-one-v16-latin-regular.woff2") format("woff2"),
+    url("/fonts/dela-gothic-one-v16-latin-regular.ttf") format("truetype");
 }
 
 /* manrope-regular - latin */
 @font-face {
-	font-display: swap;
-	font-family: "Manrope";
-	font-style: normal;
-	font-weight: 400;
-	src: url("/fonts/manrope-v15-latin-regular.woff2") format("woff2"),
-		url("/fonts/manrope-v15-latin-regular.ttf") format("truetype");
+  font-display: swap;
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/manrope-v15-latin-regular.woff2") format("woff2"),
+    url("/fonts/manrope-v15-latin-regular.ttf") format("truetype");
 }
 /* manrope-500 - latin */
 @font-face {
-	font-display: swap;
-	font-family: "Manrope";
-	font-style: normal;
-	font-weight: 500;
-	src: url("/fonts/manrope-v15-latin-500.woff2") format("woff2"),
-		url("/fonts/manrope-v15-latin-500.ttf") format("truetype");
+  font-display: swap;
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 500;
+  src: url("/fonts/manrope-v15-latin-500.woff2") format("woff2"),
+    url("/fonts/manrope-v15-latin-500.ttf") format("truetype");
 }
 /* manrope-600 - latin */
 @font-face {
-	font-display: swap;
-	font-family: "Manrope";
-	font-style: normal;
-	font-weight: 600;
-	src: url("/fonts/manrope-v15-latin-600.woff2") format("woff2"),
-		url("/fonts/manrope-v15-latin-600.ttf") format("truetype");
+  font-display: swap;
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 600;
+  src: url("/fonts/manrope-v15-latin-600.woff2") format("woff2"),
+    url("/fonts/manrope-v15-latin-600.ttf") format("truetype");
 }
 /* manrope-700 - latin */
 @font-face {
-	font-display: swap;
-	font-family: "Manrope";
-	font-style: normal;
-	font-weight: 700;
-	src: url("/fonts/manrope-v15-latin-700.woff2") format("woff2"),
-		url("/fonts/manrope-v15-latin-700.ttf") format("truetype");
+  font-display: swap;
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/manrope-v15-latin-700.woff2") format("woff2"),
+    url("/fonts/manrope-v15-latin-700.ttf") format("truetype");
 }
 
 /* ANIMATIONS */
 /* Content animations for both cards */
 .hero-card::before {
-	animation: heroCardText 23s steps(10) infinite;
+  animation: heroCardText 20.5s steps(10) infinite;
 }
 
 .hero-card-2::before {
-	animation: heroCardText 20s steps(10) infinite;
+  animation: heroCardText 20s steps(10) infinite;
 }
 
 /* Card position animations */
 .hero-card {
-	animation: heroCard 2s ease-in-out infinite;
+  animation: heroCard 2s ease-in-out infinite;
 }
 
 .hero-card-2 {
-	animation: heroCard2 2s ease-in-out infinite;
+  animation: heroCard2 2s ease-in-out infinite;
 }
 
 /* Keyframes for content changes */
 @keyframes heroCardText {
-	0%,
-	0% {
-		content: "Hello!";
-	}
-	10%,
-	10% {
-		content: "Hola!";
-	}
-	20%,
-	20% {
-		content: "Bonjour!";
-	}
-	30%,
-	30% {
-		content: "你好!";
-	}
-	40%,
-	40% {
-		content: "Habari!";
-	}
-	50%,
-	50% {
-		content: "Ba wo ni?";
-	}
-	60%,
-	60% {
-		content: "नमस्ते!";
-	}
-	70%,
-	70% {
-		content: "مرحبًا";
-	}
-	80%,
-	80% {
-		content: "Привіт!";
-	}
-	90%,
-	90% {
-		content: "ہیلو!";
-	}
-	100%,
-	10% {
-		content: "Xin chào!";
-	}
+  0%,
+  0% {
+    content: "Hello!";
+  }
+  10%,
+  10% {
+    content: "Hola!";
+  }
+  20%,
+  20% {
+    content: "Bonjour!";
+  }
+  30%,
+  30% {
+    content: "你好!";
+  }
+  40%,
+  40% {
+    content: "Habari!";
+  }
+  50%,
+  50% {
+    content: "Ba wo ni?";
+  }
+  60%,
+  60% {
+    content: "नमस्ते!";
+  }
+  70%,
+  70% {
+    content: "مرحبًا";
+  }
+  80%,
+  80% {
+    content: "Привіт!";
+  }
+  90%,
+  90% {
+    content: "ہیلو!";
+  }
+  100%,
+  10% {
+    content: "Xin chào!";
+  }
 }
 
 /* Keyframes for card shuffling */
 @keyframes heroCard {
-	0% {
-		transform: rotate(0deg) translate(0);
-		z-index: 50;
-	}
-	50% {
-		transform: rotate(-10deg) translateX(-50px) translateY(-100px);
-	}
-	100% {
-		transform: rotate(0deg) translate(0);
-		z-index: 40;
-	}
+  0% {
+    transform: rotate(0deg) translate(0);
+    z-index: 50;
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(-10deg) translateX(-50px) translateY(-100px);
+  }
+  89% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(0deg) translate(0);
+    z-index: 40;
+  }
 }
 
 @keyframes heroCard2 {
-	0% {
-		z-index: 40;
-	}
-	100% {
-		z-index: 50;
-	}
+  0% {
+    z-index: 40;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    z-index: 50;
+  }
 }
 
 @tailwind utilities;
