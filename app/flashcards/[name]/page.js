@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useAuth, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
+import { useAuth, useUser, UserButton, useClerk } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '@/firebase'
 import { useParams } from 'next/navigation'
@@ -13,6 +14,9 @@ export default function FlashcardSet() {
   const { userId } = useAuth()
   const [flashcardSet, setFlashcardSet] = useState(null)
   const [flipped, setFlipped] = useState([])
+  const { isLoaded, isSignedIn } = useUser()
+  const { signOut } = useClerk()
+  const router = useRouter()
 
   useEffect(() => {
     async function fetchFlashcardSet() {
@@ -44,6 +48,14 @@ export default function FlashcardSet() {
     })
   }
 
+  const handleSignOut = () => {
+    signOut()
+  }
+
+  const handleGenerateFlashcards = () => {
+    router.push('/')
+  }
+
   if (!flashcardSet) {
     return <div>Loading...</div>
   }
@@ -62,13 +74,18 @@ export default function FlashcardSet() {
         <AppBar position='static'>
           <Toolbar>
             <Typography variant='h6' style={{ flexGrow: 1 }}>LingoFlash</Typography>
-            <SignedOut>
-              <Button href='/sign-in' sx={{ color: 'white', backgroundColor: 'black' }}>Login</Button>
-              <Button href='/sign-up' sx={{ color: 'white', backgroundColor: 'black' }}>Sign Up</Button>
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
+            {!isLoaded ? null : isSignedIn ? (
+              <>
+                <Button onClick={handleGenerateFlashcards} sx={{ color: 'white', mr: 1 }}>+ New</Button>
+                <UserButton />
+                <Button onClick={handleSignOut} sx={{ color: 'white', ml: 1 }}>Sign Out</Button>
+              </>
+            ) : (
+              <>
+                <Button href='/sign-in' sx={{ color: 'white', backgroundColor: 'black', mr: 1 }}>Login</Button>
+                <Button href='/sign-up' sx={{ color: 'white', backgroundColor: 'black' }}>Sign Up</Button>
+              </>
+            )}
           </Toolbar>
         </AppBar>
         <h1>{name}</h1>
