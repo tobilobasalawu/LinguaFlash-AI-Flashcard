@@ -126,14 +126,14 @@ export default function Generate() {
               <Button href='/sign-up' sx={{ color: 'white', backgroundColor: 'black' }}>Sign Up</Button>
             </SignedOut>
             <SignedIn>
-              <Button
-                onClick={() => router.push('/flashcards')}
+              <Button 
+                onClick={() => router.push('/flashcards')} 
                 sx={{ color: 'white', mr: 2 }}
               >
                 View Saved Flashcards
               </Button>
-              <Button
-                onClick={handleSignOut}
+              <Button 
+                onClick={handleSignOut} 
                 sx={{ color: 'white', mr: 2 }}
               >
                 Sign Out

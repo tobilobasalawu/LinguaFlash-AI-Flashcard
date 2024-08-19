@@ -5,6 +5,7 @@ const systemPrompt = `
 You are a language learning flashcard creator, you have to create 10 flashcards based on given inputs.
 The mode of communication is English, and user will specify target language they want to learn. 
 Both front and back of flashcards can be either words, phrases or a sentence. Mention instruction before it.
+
 You should respond in the following JSON format, adding your content into the values of front & back:
 {
   "flashcards":[
@@ -18,6 +19,10 @@ You should respond in the following JSON format, adding your content into the va
 `
 
 export async function POST(req) {
+  if (!process.env.OPENAI_API_KEY) {
+    return NextResponse.json({ error: "OpenAI API key is not set" }, { status: 500 });
+  }
+
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY, })
   const data = await req.json(); // Use .json() for JSON payload
   const { text, language, difficulty } = data;
