@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useAuth, useUser } from '@clerk/nextjs'
+import { useAuth, useUser, useClerk } from '@clerk/nextjs'
 import { doc, collection, getDoc, setDoc } from 'firebase/firestore';
 import { Card, CardActionArea, CardContent, Typography, Grid, Container, AppBar, Toolbar, Button, TextField } from '@mui/material';
 import { UserButton } from '@clerk/nextjs';
@@ -12,6 +12,7 @@ import Head from 'next/head'
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser()
   const { userId } = useAuth()
+  const { signOut } = useClerk()
   const [flashcards, setFlashcards] = useState([])
   const [searchTerm, setSearchTerm] = useState('') // Initialize as an empty string
   const router = useRouter()
@@ -45,11 +46,11 @@ export default function Flashcard() {
   }
 
   const handleGenerateFlashcards = () => {
-    // Implement this function
+    router.push('/')
   }
 
   const handleSignOut = () => {
-    // Implement this function
+    signOut()
   }
 
   const handleSearchChange = (event) => {

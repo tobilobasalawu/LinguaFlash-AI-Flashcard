@@ -78,36 +78,41 @@ export default function Generate() {
   }
 
   const saveFlashcards = async () => {
-    const batch = writeBatch(db)
-    const userDocRef = doc(collection(db, 'users'), user.id)
-    const docSnap = await getDoc(userDocRef)
-
-    if (docSnap.exists()) {
-      const collections = docSnap.data().flashcards || []
-      if (collections.find((f) => f.name === name)) {
-        alert('A collection with that name already exists. Please enter a different name.')
-        return
-      } else {
-        collections.push({ name })
-        batch.set(userDocRef, { flashcards: collections }, { merge: true })
-      }
-    } else {
-      batch.set(userDocRef, { flashcards: [{ name }] })
+    if (!name.trim()) {
+      alert('Please enter a valid collection name.');
+      return;
     }
 
-    const colRef = collection(userDocRef, name)
+    const batch = writeBatch(db);
+    const userDocRef = doc(collection(db, 'users'), user.id);
+    const docSnap = await getDoc(userDocRef);
+
+    if (docSnap.exists()) {
+      const collections = docSnap.data().flashcards || [];
+      if (collections.find((f) => f.name === name)) {
+        alert('A collection with that name already exists. Please enter a different name.');
+        return;
+      } else {
+        collections.push({ name });
+        batch.set(userDocRef, { flashcards: collections }, { merge: true });
+      }
+    } else {
+      batch.set(userDocRef, { flashcards: [{ name }] });
+    }
+
+    const colRef = collection(userDocRef, name);
     flashcards.forEach((flashcard) => {
-      const cardDocRef = doc(colRef)
-      batch.set(cardDocRef, flashcard)
-    })
+      const cardDocRef = doc(colRef);
+      batch.set(cardDocRef, flashcard);
+    });
 
     try {
-      await batch.commit()
-      handleClose()
-      router.push('/flashcards')
+      await batch.commit();
+      handleClose();
+      router.push(`/flashcards/${encodeURIComponent(name)}`);
     } catch (error) {
-      console.error('Error saving flashcards:', error)
-      alert('An error occurred while saving flashcards. Please try again.')
+      console.error('Error saving flashcards:', error);
+      alert('An error occurred while saving flashcards. Please try again.');
     }
   }
 

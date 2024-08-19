@@ -11,6 +11,7 @@ import { Grid, Card, CardActionArea, CardContent, Box, Typography, Container, Ap
 
 export default function FlashcardSet() {
   const { name } = useParams()
+  const decodedCollectionName = decodeURIComponent(name)
   const { userId } = useAuth()
   const [flashcardSet, setFlashcardSet] = useState(null)
   const [flipped, setFlipped] = useState([])
@@ -20,9 +21,9 @@ export default function FlashcardSet() {
 
   useEffect(() => {
     async function fetchFlashcardSet() {
-      if (!userId || !name) return
+      if (!userId || !decodedCollectionName) return
 
-      const flashcardsCollectionRef = collection(db, 'users', userId, name)
+      const flashcardsCollectionRef = collection(db, 'users', userId, decodedCollectionName)
       try {
         const querySnapshot = await getDocs(flashcardsCollectionRef)
         const flashcards = querySnapshot.docs.map(doc => ({
@@ -38,7 +39,7 @@ export default function FlashcardSet() {
       }
     }
     fetchFlashcardSet()
-  }, [userId, name])
+  }, [userId, decodedCollectionName])
 
   const handleCardClick = (index) => {
     setFlipped(prev => {
@@ -61,7 +62,7 @@ export default function FlashcardSet() {
   }
 
   if (flashcardSet.length === 0) {
-    return <div>No flashcards found for {name}</div>
+    return <div>No flashcards found for {decodedCollectionName}</div>
   }
 
   return (
@@ -88,7 +89,7 @@ export default function FlashcardSet() {
             )}
           </Toolbar>
         </AppBar>
-        <h1>{name}</h1>
+        <h1>{decodedCollectionName}</h1>
         <Grid container spacing={2}>
           {flashcardSet.map((flashcard, index) => (
             <Grid item xs={12} sm={6} md={4} key={flashcard.id}>
