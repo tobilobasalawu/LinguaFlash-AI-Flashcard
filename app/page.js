@@ -15,7 +15,8 @@ export default function Generate() {
   const [text, setText] = useState('')
   const [language, setLanguage] = useState('')
   const [difficulty, setDifficulty] = useState('')
-  const [Open, SetOpen] = useState(false)
+  const [open, setOpen] = useState(false)
+  let [name, setName] = useState('')
   const router = useRouter()
 
   const handleSubmit = async () => {
@@ -64,11 +65,11 @@ export default function Generate() {
   }
 
   const handleLanguageChange = (event) => {
-    setSelectedLanguage(event.target.value);
+    setLanguage(event.target.value);
   };
 
   const handleLevelChange = (event) => {
-    setSelectedLevel(event.target.value);
+    setDifficulty(event.target.value);
   };
 
   useEffect(() => {
@@ -77,107 +78,117 @@ export default function Generate() {
     }
   }, [isLoaded, isSignedIn, router])
 
-  // Firebase storage stuff
-
   return (
-    <Container maxWidth="md">
-    
-//       <Head>
-//         <title>Flashcard App</title>
-//         <meta name="description" content="Flashcard App" />
-//       </Head>
-    
-      <AppBar position='static'>
-        <Toolbar>
-          <Typography variant='h6' style={{ flexGrow: 1 }}>LingoFlash</Typography>
-          <SignedOut>
-            <Button href='/sign-in' sx={{ color: 'white', backgroundColor: 'black' }}>Login</Button>
-            <Button href='/sign-up' sx={{ color: 'white', backgroundColor: 'black' }}>Sign Up</Button>
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-        </Toolbar>
-      </AppBar>
+    <>
+      {/* <Head>
+        <title>Flashcard App</title>
+        <meta name="description" content="Flashcard App" />
+      </Head> */}
+      <Container maxWidth="md">
+        <AppBar position='static'>
+          <Toolbar>
+            <Typography variant='h6' style={{ flexGrow: 1 }}>LingoFlash</Typography>
+            <SignedOut>
+              <Button href='/sign-in' sx={{ color: 'white', backgroundColor: 'black', mr: 1 }}>Login</Button>
+              <Button href='/sign-up' sx={{ color: 'white', backgroundColor: 'black' }}>Sign Up</Button>
+            </SignedOut>
+            <SignedIn>
+              <Button
+                onClick={() => router.push('/flashcards')}
+                sx={{ color: 'white', mr: 2 }}
+              >
+                View Saved Flashcards
+              </Button>
+              <Button
+                onClick={handleSignOut}
+                sx={{ color: 'white', mr: 2 }}
+              >
+                Sign Out
+              </Button>
+              <UserButton />
+            </SignedIn>
+          </Toolbar>
+        </AppBar>
 
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Generate Flashcards
-        </Typography>
-
-        <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel id="language-label">Select Language</InputLabel>
-          <Select
-            labelId="language-label"
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            label="Select Language"
-          >
-            {Object.entries(languages).map(([name, code]) => (
-              <MenuItem key={code} value={code}>{name}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel id="difficulty-label">Select Difficulty</InputLabel>
-          <Select
-            labelId="difficulty-label"
-            value={difficulty}
-            onChange={(e) => setDifficulty(e.target.value)}
-            label="Select Difficulty"
-          >
-            <MenuItem value={'A1'}>A1 - Beginner</MenuItem>
-            <MenuItem value={'A2'}>A2 - Elementary</MenuItem>
-            <MenuItem value={'B1'}>B1 - Intermediate</MenuItem>
-            <MenuItem value={'B2'}>B2 - Upper Intermediate</MenuItem>
-            <MenuItem value={'C1'}>C1 - Advanced</MenuItem>
-            <MenuItem value={'C2'}>C2 - Proficient</MenuItem>
-          </Select>
-        </FormControl>
-
-        <TextField
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          label="Enter any additional info about your level or desired cards"
-          fullWidth
-          multiline
-          rows={4}
-          variant="outlined"
-          sx={{ mb: 2 }}
-        />
-
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleSubmit}
-          fullWidth
-        >
-          Generate Flashcards
-        </Button>
-      </Box>
-
-      {flashcards.length > 0 && (
-        <Box sx={{ mt: 4 }}>
-          <Typography variant="h5" component="h2" gutterBottom>
-            Generated Flashcards
+        <Box sx={{ my: 4 }}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            Generate Flashcards
           </Typography>
-          <Grid container spacing={2}>
-            {flashcards.map((flashcard, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
-                <Card>
-                  <CardContent>
-                    <Typography variant="h6">Front:</Typography>
-                    <Typography>{flashcard.front}</Typography>
-                    <Typography variant="h6" sx={{ mt: 2 }}>Back:</Typography>
-                    <Typography>{flashcard.back}</Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <InputLabel id="language-label">Select Language</InputLabel>
+            <Select
+              labelId="language-label"
+              value={language}
+              onChange={handleLanguageChange}
+              label="Select Language"
+            >
+              {Object.entries(languages).map(([name, code]) => (
+                <MenuItem key={code} value={code}>{name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <InputLabel id="difficulty-label">Select Difficulty</InputLabel>
+            <Select
+              labelId="difficulty-label"
+              value={difficulty}
+              onChange={handleLevelChange}
+              label="Select Difficulty"
+            >
+              <MenuItem value={'A1'}>A1 - Beginner</MenuItem>
+              <MenuItem value={'A2'}>A2 - Elementary</MenuItem>
+              <MenuItem value={'B1'}>B1 - Intermediate</MenuItem>
+              <MenuItem value={'B2'}>B2 - Upper Intermediate</MenuItem>
+              <MenuItem value={'C1'}>C1 - Advanced</MenuItem>
+              <MenuItem value={'C2'}>C2 - Proficient</MenuItem>
+            </Select>
+          </FormControl>
+
+          <TextField
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            label="Enter any additional info about your level or desired cards"
+            fullWidth
+            multiline
+            rows={4}
+            variant="outlined"
+            sx={{ mb: 2 }}
+          />
+
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+            fullWidth
+          >
+            Generate Flashcards
+          </Button>
         </Box>
-      )}
-    </Container>
+
+        {flashcards.length > 0 && (
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="h5" component="h2" gutterBottom>
+              Generated Flashcards
+            </Typography>
+            <Grid container spacing={2}>
+              {flashcards.map((flashcard, index) => (
+                <Grid item xs={12} sm={6} md={4} key={index}>
+                  <Card onClick={() => handleCardClick(index)}>
+                    <CardContent>
+                      <Typography variant="h6">Front:</Typography>
+                      <Typography>{flashcard.front}</Typography>
+                      <Typography variant="h6" sx={{ mt: 2 }}>Back:</Typography>
+                      <Typography>{flipped[index] ? flashcard.back : "Click to reveal"}</Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        )}
+      </Container>
+    </>
   )
 }
