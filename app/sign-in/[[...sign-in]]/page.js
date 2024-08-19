@@ -1,25 +1,12 @@
-import { AppBar, Container, Toolbar, Typography, Box, Button, Link } from '@mui/material'
-import { SignIn } from '@clerk/nextjs'
+import { SignIn } from "@clerk/nextjs"
 
 export default function SignInPage() {
-    return <Container>
-        <AppBar position='static'>
-            <Toolbar>
-                <Typography variant='h6' sx={{ flexGrow: 1 }}>
-                    LinguaFlash
-                </Typography>
-                <Button sx={{ color: 'white', backgroundColor: 'black' }}>
-                    <Link href='/sign-in'>Login</Link>
-                </Button>
-                <Button sx={{ color: 'white', backgroundColor: 'black' }}>
-                    <Link href='/sign-up'>Sign Up</Link>
-                </Button>
-            </Toolbar>
-        </AppBar>
-
-        <Box display='flex' flexDirection='column' justifyContent='center' alighItems='center'>
-            <Typography variant='h4'>Sign In</Typography>
-            <SignIn />
-        </Box>
-    </Container>
+  return (
+    <main className="relative flex justify-center items-center w-full h-svh overflow-hidden">
+      <div className="z-[2] absolute top-[-50%] left-[-50%] right-[-50%] bottom-[-50%] h-[200vh] w-[200svw] animate-noise"></div>
+      <div className="z-[1] absolute -top-[20svh] -left-[10svw] w-[500px] h-[500px] bg-primary blur-[100px] rounded-full"></div>
+      <div className="z-[1] absolute -bottom-[20svh] -right-[10svw] w-[500px] h-[500px] bg-primary blur-[100px] rounded-full"></div>
+      <SignIn />
+    </main>
+  )
 }

@@ -90,7 +90,7 @@ export default function Hero() {
               Languages
             </p>
           </div>
-          <button className="font-manrope font-bold -tracking-[.02em] text-base lg:text-lg !leading-none text-black bg-pink-gradient rounded-xl lg:rounded-2xl py-4 px-6 lg:py-[18px] lg:px-9 hover:bg-none hover:bg-fuchsia-400 transition-colors duration-100">
+          <button className="primary-cta py-4 px-6 lg:py-[18px] lg:px-9 text-base lg:text-lg">
             Get started
           </button>
         </div>

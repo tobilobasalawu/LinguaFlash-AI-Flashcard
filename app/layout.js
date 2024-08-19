@@ -4,10 +4,15 @@ import "./globals.css"
 import { ClerkProvider } from "@clerk/nextjs"
 import AppContextProvider from "@/contexts/Appcontext"
 import Footer from "@/components/Footer"
+import { usePathname } from "next/navigation"
+import { appearance } from "@/config/clerk"
 
 export default function RootLayout({ children }) {
+  const pathname = usePathname()
+  const canShowFooter = pathname !== "/sign-in" && pathname !== "/sign-up"
+
   return (
-    <ClerkProvider>
+    <ClerkProvider appearance={appearance}>
       <html lang="en">
         <AppContextProvider>
           <head>
@@ -18,10 +23,10 @@ export default function RootLayout({ children }) {
             />
             <title>LinguaFlash</title>
           </head>
-          <body className="flex justify-center bg-black">
+          <body className="flex justify-center bg-black overflow-x-hidden">
             <div className="flex-none w-full max-w-[1536px]">
               {children}
-              <Footer />
+              {canShowFooter && <Footer />}
             </div>
           </body>
         </AppContextProvider>
