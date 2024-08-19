@@ -1,25 +1,38 @@
 'use client'
 import Image from 'next/image'
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
-import { useState, useEffect } from 'react'
-import { useUser } from '@clerk/nextjs'
-import { Container, TextField, Button, Typography, Box, Grid, Card, CardContent, AppBar, Toolbar, Select, MenuItem, InputLabel, FormControl } from '@mui/material'
+import { SignedIn, SignedOut, UserButton, useUser, useAuth, useClerk } from '@clerk/nextjs'
+import { useState } from 'react'
+import { Container, TextField, Button, Typography, Box, Grid, Card, CardContent, AppBar, Toolbar, Select, MenuItem, InputLabel, FormControl, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, CardActionArea } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import languages from '../data/languages.json'
-// import Head from "next/head";
+import Head from "next/head";
+import { getFirestore, doc, collection, writeBatch, getDoc } from 'firebase/firestore';
+import { db } from '@/firebase'; // Adjust this import path as needed
 
 export default function Generate() {
   const { isLoaded, isSignedIn, user } = useUser()
+  const { userId } = useAuth()
+  const { signOut } = useClerk()
   const [flashcards, setFlashcards] = useState([])
   const [flipped, SetFlipped] = useState([])
   const [text, setText] = useState('')
   const [language, setLanguage] = useState('')
   const [difficulty, setDifficulty] = useState('')
   const [open, setOpen] = useState(false)
-  let [name, setName] = useState('')
+  const [name, setName] = useState('')
   const router = useRouter()
 
+  const handleSignOut = () => {
+    signOut()
+    router.push('/')
+  }
+
   const handleSubmit = async () => {
+    if (!userId) {
+      alert('Please sign in to generate flashcards.')
+      return
+    }
+
     if (!text.trim() || !language || !difficulty) {
       alert('Please fill in all fields to generate flashcards.')
       return
@@ -50,10 +63,10 @@ export default function Generate() {
     }
   }
 
-  const handleCardClick = (id) => {
+  const handleCardClick = (index) => {
     SetFlipped((prev) => ({
       ...prev,
-      [id]: !prev[id]
+      [index]: !prev[index]
     }))
   }
 
@@ -64,26 +77,46 @@ export default function Generate() {
     setOpen(false)
   }
 
-  const handleLanguageChange = (event) => {
-    setLanguage(event.target.value);
-  };
+  const saveFlashcards = async () => {
+    const batch = writeBatch(db)
+    const userDocRef = doc(collection(db, 'users'), user.id)
+    const docSnap = await getDoc(userDocRef)
 
-  const handleLevelChange = (event) => {
-    setDifficulty(event.target.value);
-  };
-
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push('/sign-in')
+    if (docSnap.exists()) {
+      const collections = docSnap.data().flashcards || []
+      if (collections.find((f) => f.name === name)) {
+        alert('A collection with that name already exists. Please enter a different name.')
+        return
+      } else {
+        collections.push({ name })
+        batch.set(userDocRef, { flashcards: collections }, { merge: true })
+      }
+    } else {
+      batch.set(userDocRef, { flashcards: [{ name }] })
     }
-  }, [isLoaded, isSignedIn, router])
+
+    const colRef = collection(userDocRef, name)
+    flashcards.forEach((flashcard) => {
+      const cardDocRef = doc(colRef)
+      batch.set(cardDocRef, flashcard)
+    })
+
+    try {
+      await batch.commit()
+      handleClose()
+      router.push('/flashcards')
+    } catch (error) {
+      console.error('Error saving flashcards:', error)
+      alert('An error occurred while saving flashcards. Please try again.')
+    }
+  }
 
   return (
     <>
-      {/* <Head>
+      <Head>
         <title>Flashcard App</title>
         <meta name="description" content="Flashcard App" />
-      </Head> */}
+      </Head>
       <Container maxWidth="md">
         <AppBar position='static'>
           <Toolbar>
@@ -115,56 +148,72 @@ export default function Generate() {
             Generate Flashcards
           </Typography>
 
-          <FormControl fullWidth sx={{ mb: 2 }}>
-            <InputLabel id="language-label">Select Language</InputLabel>
-            <Select
-              labelId="language-label"
-              value={language}
-              onChange={handleLanguageChange}
-              label="Select Language"
-            >
-              {Object.entries(languages).map(([name, code]) => (
-                <MenuItem key={code} value={code}>{name}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          {isSignedIn ? (
+            <>
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel id="language-label">Select Language</InputLabel>
+                <Select
+                  labelId="language-label"
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
+                  label="Select Language"
+                >
+                  {Object.entries(languages).map(([name, code]) => (
+                    <MenuItem key={code} value={code}>{name}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
 
-          <FormControl fullWidth sx={{ mb: 2 }}>
-            <InputLabel id="difficulty-label">Select Difficulty</InputLabel>
-            <Select
-              labelId="difficulty-label"
-              value={difficulty}
-              onChange={handleLevelChange}
-              label="Select Difficulty"
-            >
-              <MenuItem value={'A1'}>A1 - Beginner</MenuItem>
-              <MenuItem value={'A2'}>A2 - Elementary</MenuItem>
-              <MenuItem value={'B1'}>B1 - Intermediate</MenuItem>
-              <MenuItem value={'B2'}>B2 - Upper Intermediate</MenuItem>
-              <MenuItem value={'C1'}>C1 - Advanced</MenuItem>
-              <MenuItem value={'C2'}>C2 - Proficient</MenuItem>
-            </Select>
-          </FormControl>
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel id="difficulty-label">Select Difficulty</InputLabel>
+                <Select
+                  labelId="difficulty-label"
+                  value={difficulty}
+                  onChange={(e) => setDifficulty(e.target.value)}
+                  label="Select Difficulty"
+                >
+                  <MenuItem value={'A1'}>A1 - Beginner</MenuItem>
+                  <MenuItem value={'A2'}>A2 - Elementary</MenuItem>
+                  <MenuItem value={'B1'}>B1 - Intermediate</MenuItem>
+                  <MenuItem value={'B2'}>B2 - Upper Intermediate</MenuItem>
+                  <MenuItem value={'C1'}>C1 - Advanced</MenuItem>
+                  <MenuItem value={'C2'}>C2 - Proficient</MenuItem>
+                </Select>
+              </FormControl>
 
-          <TextField
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            label="Enter any additional info about your level or desired cards"
-            fullWidth
-            multiline
-            rows={4}
-            variant="outlined"
-            sx={{ mb: 2 }}
-          />
+              <TextField
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                label="Enter any additional info about your level or desired cards"
+                fullWidth
+                multiline
+                rows={4}
+                variant="outlined"
+                sx={{ mb: 2 }}
+              />
 
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            fullWidth
-          >
-            Generate Flashcards
-          </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit}
+                fullWidth
+              >
+                Generate Flashcards
+              </Button>
+            </>
+          ) : (
+            <Box sx={{ textAlign: 'center', mt: 4 }}>
+              <Typography variant="h6" gutterBottom>
+                Please sign in to generate and use flashcards.
+              </Typography>
+              <Button href="/sign-in" variant="contained" color="primary" sx={{ mr: 2 }}>
+                Sign In
+              </Button>
+              <Button href="/sign-up" variant="outlined" color="primary">
+                Sign Up
+              </Button>
+            </Box>
+          )}
         </Box>
 
         {flashcards.length > 0 && (
@@ -175,19 +224,91 @@ export default function Generate() {
             <Grid container spacing={2}>
               {flashcards.map((flashcard, index) => (
                 <Grid item xs={12} sm={6} md={4} key={index}>
-                  <Card onClick={() => handleCardClick(index)}>
-                    <CardContent>
-                      <Typography variant="h6">Front:</Typography>
-                      <Typography>{flashcard.front}</Typography>
-                      <Typography variant="h6" sx={{ mt: 2 }}>Back:</Typography>
-                      <Typography>{flipped[index] ? flashcard.back : "Click to reveal"}</Typography>
-                    </CardContent>
+                  <Card>
+                    <CardActionArea onClick={() => handleCardClick(index)}>
+                      <CardContent>
+                        <Box sx={{
+                          perspective: '1000px',
+                          height: '150px',
+                        }}>
+                          <Box sx={{
+                            transition: 'transform 0.8s',
+                            transformStyle: 'preserve-3d',
+                            position: 'relative',
+                            width: '100%',
+                            height: '100%',
+                            transform: flipped[index] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                          }}>
+                            <Box sx={{
+                              position: 'absolute',
+                              width: '100%',
+                              height: '100%',
+                              backfaceVisibility: 'hidden',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              padding: 2,
+                              boxSizing: 'border-box',
+                            }}>
+                              <Typography variant="h6" component="div">
+                                {flashcard.front}
+                              </Typography>
+                            </Box>
+                            <Box sx={{
+                              position: 'absolute',
+                              width: '100%',
+                              height: '100%',
+                              backfaceVisibility: 'hidden',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              padding: 2,
+                              boxSizing: 'border-box',
+                              transform: 'rotateY(180deg)',
+                            }}>
+                              <Typography variant="h6" component="div">
+                                {flashcard.back}
+                              </Typography>
+                            </Box>
+                          </Box>
+                        </Box>
+                      </CardContent>
+                    </CardActionArea>
                   </Card>
                 </Grid>
               ))}
             </Grid>
+            <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+              <Button variant="contained" color="secondary" onClick={handleOpen}>
+                Save Flashcards
+              </Button>
+            </Box>
           </Box>
         )}
+
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Save Flashcards</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Enter a name for your flashcard collection.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Collection Name"
+              type="text"
+              fullWidth
+              variant="outlined"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="error">Cancel</Button>
+            <Button onClick={saveFlashcards} color="secondary">Save</Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     </>
   )
