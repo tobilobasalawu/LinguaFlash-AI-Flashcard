@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import { SignedIn, SignedOut, UserButton, useUser, useAuth } from '@clerk/nextjs'
+import { SignedIn, SignedOut, UserButton, useUser, useAuth, useClerk } from '@clerk/nextjs'
 import { useState } from 'react'
 import { Container, TextField, Button, Typography, Box, Grid, Card, CardContent, AppBar, Toolbar, Select, MenuItem, InputLabel, FormControl, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, CardActionArea } from '@mui/material'
 import { useRouter } from 'next/navigation'
@@ -12,6 +12,7 @@ import { db } from '@/firebase'; // Adjust this import path as needed
 export default function Generate() {
   const { isLoaded, isSignedIn, user } = useUser()
   const { userId } = useAuth()
+  const { signOut } = useClerk()
   const [flashcards, setFlashcards] = useState([])
   const [flipped, SetFlipped] = useState([])
   const [text, setText] = useState('')
@@ -20,6 +21,11 @@ export default function Generate() {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const router = useRouter()
+
+  const handleSignOut = () => {
+    signOut()
+    router.push('/')
+  }
 
   const handleSubmit = async () => {
     if (!userId) {
@@ -116,10 +122,22 @@ export default function Generate() {
           <Toolbar>
             <Typography variant='h6' style={{ flexGrow: 1 }}>LingoFlash</Typography>
             <SignedOut>
-              <Button href='/sign-in' sx={{ color: 'white', backgroundColor: 'black' }}>Login</Button>
+              <Button href='/sign-in' sx={{ color: 'white', backgroundColor: 'black', mr: 1 }}>Login</Button>
               <Button href='/sign-up' sx={{ color: 'white', backgroundColor: 'black' }}>Sign Up</Button>
             </SignedOut>
             <SignedIn>
+              <Button 
+                onClick={() => router.push('/flashcards')} 
+                sx={{ color: 'white', mr: 2 }}
+              >
+                View Saved Flashcards
+              </Button>
+              <Button 
+                onClick={handleSignOut} 
+                sx={{ color: 'white', mr: 2 }}
+              >
+                Sign Out
+              </Button>
               <UserButton />
             </SignedIn>
           </Toolbar>
