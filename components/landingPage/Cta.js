@@ -9,7 +9,7 @@ export default function Cta() {
           Ready to ace a new language?
         </h2>
         <Link
-          href="/sign-up"
+          href="/new"
           className="font-manrope font-bold -tracking-[.02em] text-lg lg:text-xl !leading-none text-black bg-white rounded-xl lg:rounded-2xl py-4 px-6 lg:py-[18px] lg:px-9 hover:bg-none hover:bg-black hover:text-white transition-colors duration-100"
         >
           Let&apos;s go 🚀

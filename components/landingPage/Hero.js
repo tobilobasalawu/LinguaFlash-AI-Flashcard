@@ -1,5 +1,6 @@
 "use client"
 import Image from "next/image"
+import Link from "next/link"
 import StackedFlashCards from "../StackedFlashcards"
 
 export default function Hero() {
@@ -90,9 +91,12 @@ export default function Hero() {
               Languages
             </p>
           </div>
-          <button className="primary-cta py-4 px-6 lg:py-[18px] lg:px-9 text-base lg:text-lg">
+          <Link
+            href="/new"
+            className="primary-cta py-4 px-6 lg:py-[18px] lg:px-9 text-base lg:text-lg"
+          >
             Get started
-          </button>
+          </Link>
         </div>
       </div>
 

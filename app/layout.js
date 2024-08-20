@@ -6,6 +6,8 @@ import AppContextProvider from "@/contexts/Appcontext"
 import Footer from "@/components/Footer"
 import { usePathname } from "next/navigation"
 import { appearance } from "@/config/clerk"
+import { ThemeProvider, CssBaseline } from "@mui/material"
+import { themeOverride } from "@/config/theme"
 
 export default function RootLayout({ children }) {
   const pathname = usePathname()
@@ -25,7 +27,10 @@ export default function RootLayout({ children }) {
           </head>
           <body className="flex justify-center bg-black overflow-x-hidden">
             <div className="flex-none w-full max-w-[1536px]">
-              {children}
+              <ThemeProvider theme={themeOverride}>
+                <CssBaseline />
+                {children}
+              </ThemeProvider>
               {canShowFooter && <Footer />}
             </div>
           </body>

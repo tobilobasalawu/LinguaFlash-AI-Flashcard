@@ -53,10 +53,10 @@ export default function Header() {
       )}
 
       <Link
-        href="/sign-in"
+        href="/new"
         className="font-manrope font-bold -tracking-[.02em] text-base !leading-none text-white border border-pink rounded-lg py-2 px-4 lg:py-[12px] lg:px-6 ml-auto lg:ml-0"
       >
-        Login
+        Get started
       </Link>
 
       <button

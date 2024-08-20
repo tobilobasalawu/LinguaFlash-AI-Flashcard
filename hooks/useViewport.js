@@ -1,14 +1,17 @@
+"use client"
+
 import { useState, useEffect } from "react"
 
 export default function useViewport() {
   const [viewport, setViewport] = useState({
-    isPc: window.innerWidth >= 1024,
-    isTablet: window.innerWidth >= 768 && window.innerWidth < 1024,
-    isMobile: window.innerWidth < 768,
+    isPc: false,
+    isTablet: false,
+    isMobile: false,
   })
 
   useEffect(() => {
     function updateViewport() {
+      if (typeof window === "undefined") return
       const width = window.innerWidth
       const newViewport = {
         isPc: width >= 1024,
