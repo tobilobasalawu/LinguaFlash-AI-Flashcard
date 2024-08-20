@@ -19,6 +19,7 @@ import {
   DialogContentText,
   DialogActions,
   CardActionArea,
+  CircularProgress,
 } from "@mui/material"
 import { useRouter } from "next/navigation"
 import languages from "../../data/languages.json"
@@ -38,6 +39,7 @@ export default function Generate() {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState("")
   const router = useRouter()
+  const [isGenerating, setIsgenerating] = useState(false)
 
   const handleSubmit = async () => {
     if (!userId) {
@@ -51,6 +53,7 @@ export default function Generate() {
     }
 
     try {
+      setIsgenerating(() => true)
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: {
@@ -69,9 +72,11 @@ export default function Generate() {
 
       const data = await response.json()
       setFlashcards(data)
+      setIsgenerating(() => false)
     } catch (error) {
       console.error("Error generating flashcards:", error)
       alert("An error occurred while generating flashcards. Please try again.")
+      setIsgenerating(() => true)
     }
   }
 
@@ -278,9 +283,19 @@ export default function Generate() {
 
               <button
                 onClick={handleSubmit}
-                className="col-start-1 col-end-3 row-start-4 row-end-5 md:row-start-3 md:row-end-4 primary-cta text-lg lg:text-xl py-3 md:py-4"
+                className="col-start-1 col-end-3 row-start-4 row-end-5 md:row-start-3 md:row-end-4 flex justify-center items-center gap-3 primary-cta text-lg lg:text-xl py-3 md:py-4"
               >
-                Generate Flashcards
+                {isGenerating ? (
+                  <>
+                    Generating...
+                    <CircularProgress
+                      size={24}
+                      sx={{ color: "#010101" }}
+                    />
+                  </>
+                ) : (
+                  "Generate Flashcards"
+                )}
               </button>
             </div>
           </>
