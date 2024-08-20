@@ -14,6 +14,7 @@ export default function Footer() {
         sizes="(max-width: 640px) 120px, 
          (max-width: 1024px) 160px, 
          182px"
+        fetchPriority="high"
       />
 
       <div className="flex items-center gap-1">

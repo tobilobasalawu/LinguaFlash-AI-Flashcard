@@ -44,6 +44,13 @@ export default function RootLayout({ children }) {
             your learning needs for free!"
             />
             <title>LinguaFlash</title>
+            <link
+              rel="preload"
+              fetchPriority="high"
+              href="/images/noise/noise.svg"
+              as="image"
+              type="image/svg+xml"
+            />
           </head>
           <body
             className={`flex justify-center bg-black overflow-x-hidden ${manrope.variable} ${caramel.variable} ${delaGothicOne.variable}`}
