@@ -47,7 +47,7 @@ export default function Header() {
                 <li className="h-fit hover:bg-pink/40 lg:hover:bg-transparent">
                   <Link
                     href="/sign-in"
-                    className="block p-3 py-4 lg:p-0 font-manrope font-bold -tracking-[.02em] text-base !leading-none text-white lg:border lg:border-pink lg:rounded-lg px-4 lg:py-[12px] lg:px-6"
+                    className="block w-full p-3 py-4 lg:p-0 font-manrope font-bold -tracking-[.02em] text-base !leading-none text-white lg:border lg:border-pink lg:rounded-lg px-4 lg:py-[12px] lg:px-6"
                   >
                     Login
                   </Link>
@@ -66,16 +66,16 @@ export default function Header() {
                 {isNew ? (
                   <li className="h-fit hover:bg-pink/40 lg:hover:bg-transparent">
                     <Link
-                      className="block p-3 py-4 lg:p-0 font-manrope font-bold -tracking-[.02em] text-base !leading-none text-white lg:border lg:border-pink lg:rounded-lg px-4 lg:py-[12px] lg:px-6"
+                      className="block w-full p-3 py-4 lg:p-0 font-manrope font-bold -tracking-[.02em] text-base !leading-none text-white lg:border lg:border-pink lg:rounded-lg px-4 lg:py-[12px] lg:px-6"
                       href="/flashcards"
                     >
                       View Saved Flashcards
                     </Link>
                   </li>
                 ) : (
-                  <li className="h-fit hover:bg-pink/40 lg:hover:bg-transparent">
+                  <li className="h-fit w-full lg:w-fit hover:bg-pink/40 lg:hover:bg-transparent">
                     <Link
-                      className="block p-3 py-4 lg:p-0 font-manrope font-bold -tracking-[.02em] text-base !leading-none text-white lg:border lg:border-pink lg:rounded-lg px-4 lg:py-[12px] lg:px-6"
+                      className="block w-full p-3 py-4 lg:p-0 font-manrope font-bold -tracking-[.02em] text-base !leading-none text-white lg:border lg:border-pink lg:rounded-lg px-4 lg:py-[12px] lg:px-6"
                       href="/new"
                     >
                       New +
