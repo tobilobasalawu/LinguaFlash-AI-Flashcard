@@ -1,33 +1,195 @@
 @tailwind base;
 @tailwind components;
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* CTA BTN */
+.primary-cta {
+  @apply font-manrope font-bold -tracking-[.02em] !leading-none text-black bg-pink-gradient rounded-xl lg:rounded-2xl hover:bg-none hover:bg-fuchsia-400 transition-colors duration-100;
+}
+
+/* BENEFITS */
+.illustration > svg {
+  width: fit;
+  height: 180px;
+}
+
+@screen lg {
+  .illustration > svg {
+    width: fit;
+    height: 250px;
+  }
+}
+
+/* ANIMATIONS */
+/* Content animations for both cards */
+.hero-card::before {
+  animation: heroCardText 20.5s steps(10) forwards infinite;
+}
+
+.hero-card-2::before {
+  animation: heroCardText 20s steps(10) forwards infinite;
+}
+
+/* Card position animations */
+.hero-card {
+  animation: heroCard 2s ease-in-out infinite;
+}
+
+.hero-card-2 {
+  animation: heroCard2 2s ease-in-out infinite;
+}
+
+/* Keyframes for content changes */
+@keyframes heroCardText {
+  0%,
+  0% {
+    content: "Hello!";
+  }
+  10%,
+  10% {
+    content: "Hola!";
+  }
+  20%,
+  20% {
+    content: "Bonjour!";
+  }
+  30%,
+  30% {
+    content: "你好!";
+  }
+  40%,
+  40% {
+    content: "Habari!";
+  }
+  50%,
+  50% {
+    content: "Ba wo ni?";
+  }
+  60%,
+  60% {
+    content: "नमस्ते!";
+  }
+  70%,
+  70% {
+    content: "مرحبًا";
+  }
+  80%,
+  80% {
+    content: "Привіт!";
+  }
+  90%,
+  90% {
+    content: "ہیلو!";
+  }
+  100%,
+  100% {
+    content: "Xin chào!";
+  }
+}
+
+/* Keyframes for card shuffling */
+@keyframes heroCard {
+  0% {
+    transform: rotate(0deg) translate(0);
+    z-index: 50;
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(-10deg) translateX(-20px) translateY(-70px);
+  }
+  89% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(0deg) translate(0);
+    z-index: 40;
+  }
+}
+
+@keyframes heroCard2 {
+  0% {
+    z-index: 40;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    z-index: 50;
+  }
+}
+
+@screen lg {
+  @keyframes heroCard {
+    0% {
+      transform: rotate(0deg) translate(0);
+      z-index: 50;
+      opacity: 1;
+    }
+    50% {
+      transform: rotate(-10deg) translateX(-50px) translateY(-100px);
+    }
+    89% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 0;
+    }
+    100% {
+      transform: rotate(0deg) translate(0);
+      z-index: 40;
+    }
+  }
+}
+
+.animate-noise {
+  background: transparent url("/images/noise/noise.svg") repeat 0 0;
+  background-repeat: repeat;
+  animation: bg-animation 0.5s infinite;
+  opacity: 1;
+  visibility: visible;
+}
+
+@keyframes bg-animation {
+  0% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-5%, -5%);
+  }
+  20% {
+    transform: translate(-10%, 5%);
+  }
+  30% {
+    transform: translate(5%, -10%);
+  }
+  40% {
+    transform: translate(-5%, 15%);
+  }
+  50% {
+    transform: translate(-10%, 5%);
+  }
+  60% {
+    transform: translate(15%, 0);
+  }
+  70% {
+    transform: translate(0, 10%);
+  }
+  80% {
+    transform: translate(-15%, 0);
+  }
+  90% {
+    transform: translate(10%, 5%);
+  }
+  100% {
+    transform: translate(5%, 0);
+  }
+}
+
 @tailwind utilities;
-
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
