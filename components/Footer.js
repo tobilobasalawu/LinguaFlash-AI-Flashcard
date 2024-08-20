@@ -25,7 +25,8 @@ export default function Footer() {
           alt="Heart icon"
         />
         <Link
-          href="/"
+          href="https://buymeacoffee.com/oyelolaabij"
+          target="_blank"
           className="font-manrope text-base text-white font-medium leading-none hover:border-b border-pink hover:border-blue pb-[2px]"
         >
           Support us

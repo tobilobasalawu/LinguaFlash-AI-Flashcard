@@ -43,7 +43,7 @@ export default function RootLayout({ children }) {
               content="Master languages faster with AI-generated flashcards tailored for
             your learning needs for free!"
             />
-            <title>LinguaFlash</title>
+            <title>LinguaFlash AI</title>
             <link
               rel="preload"
               fetchPriority="high"
