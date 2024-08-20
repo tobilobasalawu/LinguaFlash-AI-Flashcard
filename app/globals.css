@@ -5,63 +5,6 @@ html {
   scroll-behavior: smooth;
 }
 
-/* caramel-regular - latin */
-@font-face {
-  font-display: swap;
-  font-family: "Caramel";
-  font-style: normal;
-  font-weight: 400;
-  src: url("/fonts/caramel-v7-latin-regular.woff2") format("woff2"),
-    url("/fonts/caramel-v7-latin-regular.ttf") format("truetype");
-}
-
-/* dela-gothic-one-regular - latin */
-@font-face {
-  font-display: swap;
-  font-family: "Dela Gothic One";
-  font-style: normal;
-  font-weight: 400;
-  src: url("/fonts/dela-gothic-one-v16-latin-regular.woff2") format("woff2"),
-    url("/fonts/dela-gothic-one-v16-latin-regular.ttf") format("truetype");
-}
-
-/* manrope-regular - latin */
-@font-face {
-  font-display: swap;
-  font-family: "Manrope";
-  font-style: normal;
-  font-weight: 400;
-  src: url("/fonts/manrope-v15-latin-regular.woff2") format("woff2"),
-    url("/fonts/manrope-v15-latin-regular.ttf") format("truetype");
-}
-/* manrope-500 - latin */
-@font-face {
-  font-display: swap;
-  font-family: "Manrope";
-  font-style: normal;
-  font-weight: 500;
-  src: url("/fonts/manrope-v15-latin-500.woff2") format("woff2"),
-    url("/fonts/manrope-v15-latin-500.ttf") format("truetype");
-}
-/* manrope-600 - latin */
-@font-face {
-  font-display: swap;
-  font-family: "Manrope";
-  font-style: normal;
-  font-weight: 600;
-  src: url("/fonts/manrope-v15-latin-600.woff2") format("woff2"),
-    url("/fonts/manrope-v15-latin-600.ttf") format("truetype");
-}
-/* manrope-700 - latin */
-@font-face {
-  font-display: swap;
-  font-family: "Manrope";
-  font-style: normal;
-  font-weight: 700;
-  src: url("/fonts/manrope-v15-latin-700.woff2") format("woff2"),
-    url("/fonts/manrope-v15-latin-700.ttf") format("truetype");
-}
-
 /* CTA BTN */
 .primary-cta {
   @apply font-manrope font-bold -tracking-[.02em] !leading-none text-black bg-pink-gradient rounded-xl lg:rounded-2xl hover:bg-none hover:bg-fuchsia-400 transition-colors duration-100;
