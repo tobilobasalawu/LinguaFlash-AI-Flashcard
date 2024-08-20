@@ -283,7 +283,7 @@ export default function Generate() {
 
               <button
                 onClick={handleSubmit}
-                className="col-start-1 col-end-3 row-start-4 row-end-5 md:row-start-3 md:row-end-4 flex justify-center items-center gap-3 primary-cta text-lg lg:text-xl py-3 md:py-4"
+                className="col-start-1 col-end-3 row-start-4 row-end-5 [@media(min-width:900px)]:row-start-3 [@media(min-width:900px)]:row-end-4 flex justify-center items-center gap-3 primary-cta text-lg lg:text-xl py-3 md:py-4"
               >
                 {isGenerating ? (
                   <>
