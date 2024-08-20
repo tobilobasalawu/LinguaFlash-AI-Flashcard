@@ -15,17 +15,6 @@ html {
     url("/fonts/caramel-v7-latin-regular.ttf") format("truetype");
 }
 
-/* tiro-devanagari-hindi-regular - latin */
-@font-face {
-  font-display: swap;
-  font-family: "Tiro Devanagari Hindi";
-  font-style: normal;
-  font-weight: 400;
-  src: url("/fonts/tiro-devanagari-hindi-v5-latin-regular.woff2")
-      format("woff2"),
-    url("/fonts/tiro-devanagari-hindi-v5-latin-regular.ttf") format("truetype");
-}
-
 /* dela-gothic-one-regular - latin */
 @font-face {
   font-display: swap;
