@@ -278,7 +278,7 @@ export default function Generate() {
 
               <button
                 onClick={handleSubmit}
-                className="col-start-1 col-end-3 row-start-4 row-end-5 md:row-start-3 md:row-end-4 primary-cta py-3 md:py-4"
+                className="col-start-1 col-end-3 row-start-4 row-end-5 md:row-start-3 md:row-end-4 primary-cta text-lg lg:text-xl py-3 md:py-4"
               >
                 Generate Flashcards
               </button>
