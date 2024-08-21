@@ -65,7 +65,7 @@ export default function RootLayout({ children }) {
             />
             <meta
               property="og:image"
-              content="https://linguaflashai.vercel.app/seo.png"
+              content="https://linguaflashai.vercel.app/images/seo.png"
             />
             <meta
               property="og:url"
@@ -90,7 +90,7 @@ export default function RootLayout({ children }) {
             />
             <meta
               name="twitter:image"
-              content="https://linguaflashai.vercel.app/seo.png"
+              content="https://linguaflashai.vercel.app/images/seo.png"
             />
             <title>LinguaFlash AI</title>
             <link
