@@ -35,7 +35,7 @@ export default function Header() {
             <li className="hover:bg-pink/40 lg:hover:bg-transparent lg:hover:border-b lg:hover:border-pink pb-[2px]">
               <Link
                 href="./#levels"
-                className="block w-full h-fit p-3 lg:w-fit lg:p-0 font-manrope text-base text-white font-medium leading-none"
+                className="block w-full h-fit p-3 py-4 lg:w-fit lg:p-0 font-manrope text-base text-white font-medium leading-none"
               >
                 Levels
               </Link>
@@ -43,9 +43,18 @@ export default function Header() {
             <li className="hover:bg-pink/40 lg:hover:bg-transparent lg:hover:border-b lg:hover:border-pink pb-[2px]">
               <Link
                 href="./#team"
-                className="block w-full h-fit p-3 lg:w-fit lg:p-0 font-manrope text-base text-white font-medium leading-none border-t border-blue lg:border-t-0"
+                className="block w-full h-fit p-3 py-4 lg:w-fit lg:p-0 font-manrope text-base text-white font-medium leading-none border-t border-blue lg:border-t-0"
               >
                 Team
+              </Link>
+            </li>{" "}
+            <li className="hover:bg-pink/40 lg:hover:bg-transparent lg:hover:border-b lg:hover:border-pink pb-[2px]">
+              <Link
+                href="https://buymeacoffee.com/oyelolaabij"
+                target="_blank"
+                className="block w-full h-fit p-3 py-4 lg:w-fit lg:p-0 font-manrope text-base text-white font-medium leading-none border-t border-blue lg:border-t-0"
+              >
+                Support
               </Link>
             </li>
           </ul>
