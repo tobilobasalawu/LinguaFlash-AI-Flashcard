@@ -1,10 +1,5 @@
 export default [
   {
-    flag: "/images/flags/uk.svg",
-    flagName: "Flag of the United Kingdom",
-    text: "Learn English",
-  },
-  {
     flag: "/images/flags/spain.svg",
     flagName: "Flag of Spain",
     text: "aprender español",
