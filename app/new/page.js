@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import { useUser, useAuth } from "@clerk/nextjs";
-import { useState } from "react";
+import { useUser, useAuth } from "@clerk/nextjs"
+import { useState } from "react"
 import {
   TextField,
   Button,
@@ -20,40 +20,40 @@ import {
   DialogActions,
   CardActionArea,
   CircularProgress,
-} from "@mui/material";
-import { useRouter } from "next/navigation";
-import languages from "../../data/languages.json";
-import { doc, collection, writeBatch, getDoc } from "firebase/firestore";
-import { db } from "@/firebase";
-import Header from "@/components/Header";
-import Link from "next/link";
+} from "@mui/material"
+import { useRouter } from "next/navigation"
+import languages from "../../data/languages.json"
+import { doc, collection, writeBatch, getDoc } from "firebase/firestore"
+import { db } from "@/firebase"
+import Header from "@/components/Header"
+import Link from "next/link"
 
 export default function Generate() {
-  const { isSignedIn, user } = useUser();
-  const { userId } = useAuth();
-  const [flashcards, setFlashcards] = useState([]);
-  const [flipped, SetFlipped] = useState([]);
-  const [text, setText] = useState("");
-  const [language, setLanguage] = useState("");
-  const [difficulty, setDifficulty] = useState("");
-  const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
-  const router = useRouter();
-  const [isGenerating, setIsgenerating] = useState(false);
+  const { isSignedIn, user } = useUser()
+  const { userId } = useAuth()
+  const [flashcards, setFlashcards] = useState([])
+  const [flipped, SetFlipped] = useState([])
+  const [text, setText] = useState("")
+  const [language, setLanguage] = useState("")
+  const [difficulty, setDifficulty] = useState("")
+  const [open, setOpen] = useState(false)
+  const [name, setName] = useState("")
+  const router = useRouter()
+  const [isGenerating, setIsgenerating] = useState(false)
 
   const handleSubmit = async () => {
     if (!userId) {
-      alert("Please sign in to generate flashcards.");
-      return;
+      alert("Please sign in to generate flashcards.")
+      return
     }
 
     if (!text.trim() || !language || !difficulty) {
-      alert("Please fill in all fields to generate flashcards.");
-      return;
+      alert("Please fill in all fields to generate flashcards.")
+      return
     }
 
     try {
-      setIsgenerating(() => true);
+      setIsgenerating(() => true)
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: {
@@ -64,75 +64,75 @@ export default function Generate() {
           language,
           difficulty,
         }),
-      });
+      })
 
       if (!response.ok) {
-        throw new Error("Failed to generate flashcards");
+        throw new Error("Failed to generate flashcards")
       }
 
-      const data = await response.json();
-      setFlashcards(data);
-      setIsgenerating(() => false);
+      const data = await response.json()
+      setFlashcards(data)
+      setIsgenerating(() => false)
     } catch (error) {
-      console.error("Error generating flashcards:", error);
-      alert("An error occurred while generating flashcards. Please try again.");
-      setIsgenerating(() => true);
+      console.error("Error generating flashcards:", error)
+      alert("An error occurred while generating flashcards. Please try again.")
+      setIsgenerating(() => true)
     }
-  };
+  }
 
   const handleCardClick = (index) => {
     SetFlipped((prev) => ({
       ...prev,
       [index]: !prev[index],
-    }));
-  };
+    }))
+  }
 
   const handleOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const saveFlashcards = async () => {
-    const batch = writeBatch(db);
-    const userDocRef = doc(collection(db, "users"), user.id);
-    const docSnap = await getDoc(userDocRef);
+    const batch = writeBatch(db)
+    const userDocRef = doc(collection(db, "users"), user.id)
+    const docSnap = await getDoc(userDocRef)
 
-    const sanitizedName = name.replace(/\s+/g, "-").toLowerCase();
+    const sanitizedName = name.replace(/\s+/g, "-").toLowerCase()
 
     if (docSnap.exists()) {
-      const collections = docSnap.data().flashcards || [];
+      const collections = docSnap.data().flashcards || []
       if (collections.find((f) => f.name === sanitizedName)) {
         alert(
           "A collection with that name already exists. Please enter a different name."
-        );
-        return;
+        )
+        return
       } else {
-        collections.push({ name: sanitizedName, displayName: name });
-        batch.set(userDocRef, { flashcards: collections }, { merge: true });
+        collections.push({ name: sanitizedName, displayName: name })
+        batch.set(userDocRef, { flashcards: collections }, { merge: true })
       }
     } else {
       batch.set(userDocRef, {
         flashcards: [{ name: sanitizedName, displayName: name }],
-      });
+      })
     }
 
-    const colRef = collection(userDocRef, sanitizedName);
+    const colRef = collection(userDocRef, sanitizedName)
     flashcards.forEach((flashcard) => {
-      const cardDocRef = doc(colRef);
-      batch.set(cardDocRef, flashcard);
-    });
+      const cardDocRef = doc(colRef)
+      batch.set(cardDocRef, flashcard)
+    })
 
     try {
-      await batch.commit();
-      handleClose();
-      router.push("/flashcards");
+      await batch.commit()
+      handleClose()
+      router.push("/flashcards")
     } catch (error) {
-      console.error("Error saving flashcards:", error);
-      alert("An error occurred while saving flashcards. Please try again.");
+      console.error("Error saving flashcards:", error)
+      alert("An error occurred while saving flashcards. Please try again.")
     }
-  };
+  }
 
   return (
     <div className="flex flex-col gap-20 min-h-svh px-5 md:px-10 py-20  pt-[153px] lg:pt-[169px] pb-20">
@@ -156,7 +156,10 @@ export default function Generate() {
                   color: "#F1F1F1",
                 }}
               >
-                <InputLabel id="language-label" sx={{ color: "#F1F1F1" }}>
+                <InputLabel
+                  id="language-label"
+                  sx={{ color: "#F1F1F1" }}
+                >
                   Select Language
                 </InputLabel>
                 <Select
@@ -186,7 +189,10 @@ export default function Generate() {
                   }}
                 >
                   {Object.entries(languages).map(([name, code]) => (
-                    <MenuItem key={code} value={code}>
+                    <MenuItem
+                      key={code}
+                      value={code}
+                    >
                       {name}
                     </MenuItem>
                   ))}
@@ -286,7 +292,10 @@ export default function Generate() {
                 {isGenerating ? (
                   <>
                     Generating...
-                    <CircularProgress size={24} sx={{ color: "#010101" }} />
+                    <CircularProgress
+                      size={24}
+                      sx={{ color: "#010101" }}
+                    />
                   </>
                 ) : (
                   "Generate Flashcards"
@@ -331,26 +340,26 @@ export default function Generate() {
               Save Flashcards
             </button>
           </Box>
-          <Grid container spacing={2}>
+          <Grid
+            container
+            spacing={2}
+          >
             {flashcards.map((flashcard, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
-                <Card
-                  sx={{
-                    background:
-                      "url(/images/noise/noise.svg), linear-gradient(-125deg, #8864F4 14%, #D668AA 100%), linear-gradient(#A385FF, #D0C1FC)",
-                    borderRadius: {
-                      xs: "16px",
-                      md: "24px",
-                    },
-                    padding: { xs: "20px", md: "40px" },
-                  }}
-                >
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                key={index}
+              >
+                <Card sx={{ background: "transparent" }}>
                   <CardActionArea onClick={() => handleCardClick(index)}>
-                    <CardContent>
+                    <CardContent sx={{ padding: "0px" }}>
                       <Box
                         sx={{
                           perspective: "1000px",
-                          height: "160px",
+                          width: "100%",
+                          height: "220px",
                         }}
                       >
                         <Box
@@ -376,6 +385,13 @@ export default function Generate() {
                               justifyContent: "center",
                               padding: 2,
                               boxSizing: "border-box",
+                              background:
+                                "url(/images/noise/noise.svg), linear-gradient(-125deg, #8864F4 14%, #D668AA 100%), linear-gradient(#A385FF, #D0C1FC)",
+                              borderRadius: {
+                                xs: "16px",
+                                md: "24px",
+                              },
+                              padding: { xs: "20px", md: "40px" },
                             }}
                           >
                             <h3 className="font-dela-gothic-one text-xl lg:text-2xl !leading-none tracking-normal pb-2 text-black text-center">
@@ -394,6 +410,13 @@ export default function Generate() {
                               padding: 2,
                               boxSizing: "border-box",
                               transform: "rotateY(180deg)",
+                              background:
+                                "url(/images/noise/noise.svg), linear-gradient(-125deg, #8864F4 14%, #D668AA 100%), linear-gradient(#A385FF, #D0C1FC)",
+                              borderRadius: {
+                                xs: "16px",
+                                md: "24px",
+                              },
+                              padding: { xs: "20px", md: "40px" },
                             }}
                           >
                             <h3 className="font-dela-gothic-one text-xl lg:text-2xl !leading-none tracking-normal pb-2 text-black text-center">
@@ -427,9 +450,22 @@ export default function Generate() {
           },
         }}
       >
-        <DialogTitle>Save Flashcards</DialogTitle>
+        <DialogTitle
+          sx={{
+            fontSize: "24px",
+            fontWeight: "700",
+            background: "linear-gradient(-125deg, #8864F4 14%, #D668AA 100%)",
+            color: "transparent",
+            backgroundClip: "text",
+          }}
+        >
+          Save Flashcards
+        </DialogTitle>
         <DialogContent>
-          <DialogContentText color="#f1f1f1" sx={{ mb: 1 }}>
+          <DialogContentText
+            color="#e1e1e1"
+            sx={{ mb: 1 }}
+          >
             Enter a name for your flashcard collection.
           </DialogContentText>
           <TextField
@@ -442,32 +478,44 @@ export default function Generate() {
             variant="outlined"
             sx={{
               "& .MuiInputBase-input": {
-                color: "#f1f1f1",
+                color: "#e1e1e1",
               },
               "& .MuiOutlinedInput-notchedOutline": {
                 borderColor: "#222222",
+                borderRadius: "12px",
               },
               "& .MuiInputLabel-root": {
-                color: "#f1f1f1",
+                color: "#e1e1e1",
               },
             }}
             value={name}
             onChange={(e) => {
-              const value = e.target.value.replace(/[^a-zA-Z0-9\s-]/g, "");
-              setName(value);
+              const value = e.target.value.replace(/[^a-zA-Z0-9\s-]/g, "")
+              setName(value)
             }}
             helperText="Use only letters, numbers, spaces, and hyphens"
+            FormHelperTextProps={{
+              sx: {
+                color: "#b3b3b3",
+              },
+            }}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="error">
+          <Button
+            onClick={handleClose}
+            color="error"
+          >
             Cancel
           </Button>
-          <Button onClick={saveFlashcards} color="secondary">
+          <Button
+            onClick={saveFlashcards}
+            color="secondary"
+          >
             Save
           </Button>
         </DialogActions>
       </Dialog>
     </div>
-  );
+  )
 }
