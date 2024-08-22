@@ -42,7 +42,7 @@ export default function Header() {
       <div className="flex items-center gap-5">
         {canShowNav && (
           <nav className="absolute right-5 md:right-10 top-[calc(100%_+_12px)] lg:static bg-dark-gray/50 lg:bg-transparent backdrop-blur-[2px] rounded-lg border border-blue lg:border-none">
-            <ul className="flex flex-col lg:flex-row items-center lg:gap-3 w-fit h-fit overflow-hidden">
+            <ul className="flex flex-col lg:flex-row lg:items-center lg:gap-3 w-32 lg:w-fit h-fit overflow-hidden">
               <SignedOut>
                 <li className="h-fit hover:bg-pink/40 lg:hover:bg-transparent">
                   <Link
@@ -69,7 +69,7 @@ export default function Header() {
                       className="block w-full p-3 py-4 lg:p-0 font-manrope font-bold -tracking-[.02em] text-base !leading-none text-white lg:border lg:border-pink lg:rounded-lg px-4 lg:py-[12px] lg:px-6"
                       href="/flashcards"
                     >
-                      View Saved Flashcards
+                      Library
                     </Link>
                   </li>
                 ) : (
@@ -84,7 +84,7 @@ export default function Header() {
                 )}
 
                 <button
-                  className="w-full lg:w-fit h-fit hover:bg-pink/40 lg:hover:bg-transparent block p-3 py-4 lg:p-0 font-manrope font-bold -tracking-[.02em] text-base !leading-none text-white border-t border-blue lg:border lg:border-pink lg:rounded-lg px-4 lg:py-[12px] lg:px-6"
+                  className="w-full lg:w-fit h-fit hover:bg-pink/40 lg:hover:bg-transparent block p-3 py-4 lg:p-0 font-manrope font-bold -tracking-[.02em] text-base text-start !leading-none text-white border-t border-blue lg:border lg:border-pink lg:rounded-lg px-4 lg:py-[12px] lg:px-6"
                   onClick={handleSignOut}
                 >
                   Sign Out

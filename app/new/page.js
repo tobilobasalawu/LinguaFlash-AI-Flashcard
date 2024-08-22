@@ -307,7 +307,7 @@ export default function Generate() {
                   </button>
                 </div>
                 {flashcards.length > 0 && (
-                  <div className="flex flex-col items-center gap-4 lg:gap-6">
+                  <div className="w-full flex-none flex flex-col items-center gap-4 lg:gap-6">
                     <h2 className="font-dela-gothic-one text-3xl lg:text-4xl !leading-none tracking-normal pb-2 text-white text-center">
                       Generated Flashcards
                     </h2>
