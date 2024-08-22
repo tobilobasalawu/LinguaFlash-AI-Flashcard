@@ -29,7 +29,7 @@ import Header from "@/components/Header"
 import Link from "next/link"
 
 export default function Generate() {
-  const { isSignedIn, user } = useUser()
+  const { isSignedIn, user, isLoaded } = useUser()
   const { userId } = useAuth()
   const [flashcards, setFlashcards] = useState([])
   const [flipped, SetFlipped] = useState([])
@@ -138,384 +138,395 @@ export default function Generate() {
     <div className="flex flex-col gap-20 min-h-svh px-5 md:px-10 py-20  pt-[153px] lg:pt-[169px] pb-20">
       <Header />
 
-      <div className="flex-1 flex flex-col justify-center items-center gap-5 md:gap-10">
-        <h1 className="font-dela-gothic-one text-4xl lg:text-5xl !leading-none tracking-normal pb-2 text-white text-center">
-          Generate Flashcards
-        </h1>
-
-        {isSignedIn ? (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 auto-rows-auto gap-5 w-full max-w-[700px]">
-              <FormControl
-                fullWidth
-                variant="outlined"
-                sx={{
-                  mb: 2,
-                  gridColumn: { xs: "1/3", md: "1/2" },
-                  gridRow: { xs: "1/2", md: "1/2" },
-                  color: "#F1F1F1",
-                }}
-              >
-                <InputLabel
-                  id="language-label"
-                  sx={{ color: "#F1F1F1" }}
-                >
-                  Select Language
-                </InputLabel>
-                <Select
-                  labelId="language-label"
-                  value={language}
-                  onChange={(e) => setLanguage(e.target.value)}
-                  label="Select Language"
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    height: "40px",
-                    bgcolor: "transparent",
-                    color: "#F1F1F1",
-                    paddingBlock: {
-                      xs: "20px",
-                      md: "24px",
-                    },
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "#A385FF",
-                    },
-                    "&:hover .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "#D668AA",
-                    },
-                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "#D668AA",
-                    },
-                  }}
-                >
-                  {Object.entries(languages).map(([name, code]) => (
-                    <MenuItem
-                      key={code}
-                      value={code}
-                    >
-                      {name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <FormControl
-                fullWidth
-                sx={{
-                  mb: 2,
-                  gridColumn: { xs: "1/3", md: "2/3" },
-                  gridRow: { xs: "2/3", md: "1/2" },
-                  color: "#F1F1F1",
-                }}
-              >
-                <InputLabel
-                  id="difficulty-label"
-                  variant="outlined"
-                  sx={{ color: "#F1F1F1" }}
-                >
-                  Select Difficulty
-                </InputLabel>
-                <Select
-                  labelId="difficulty-label"
-                  value={difficulty}
-                  onChange={(e) => setDifficulty(e.target.value)}
-                  label="Select Difficulty"
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    height: "40px",
-                    color: "#F1F1F1",
-                    bgcolor: "transparent",
-                    paddingBlock: {
-                      xs: "20px",
-                      md: "24px",
-                    },
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "#A385FF",
-                    },
-                    "&:hover .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "#D668AA",
-                    },
-                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "#D668AA",
-                    },
-                  }}
-                >
-                  <MenuItem value={"A1"}>A1 - Beginner</MenuItem>
-                  <MenuItem value={"A2"}>A2 - Elementary</MenuItem>
-                  <MenuItem value={"B1"}>B1 - Intermediate</MenuItem>
-                  <MenuItem value={"B2"}>B2 - Upper Intermediate</MenuItem>
-                  <MenuItem value={"C1"}>C1 - Advanced</MenuItem>
-                  <MenuItem value={"C2"}>C2 - Proficient</MenuItem>
-                </Select>
-              </FormControl>
-
-              <TextField
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                label="Enter any additional info about your level or desired cards"
-                fullWidth
-                multiline
-                rows={4}
-                variant="outlined"
-                sx={{
-                  md: 2,
-                  bgcolor: "transparent",
-                  gridColumn: "1/3",
-                  gridRow: { xs: "3/4", md: "2/3" },
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "#A385FF",
-                  },
-                  "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "#D668AA",
-                  },
-                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "#D668AA",
-                  },
-                }}
-                InputLabelProps={{
-                  sx: {
-                    color: "#F1F1F1",
-                  },
-                }}
-                InputProps={{
-                  sx: {
-                    color: "#F1F1F1",
-                  },
-                }}
-              />
-
-              <button
-                onClick={handleSubmit}
-                className="col-start-1 col-end-3 row-start-4 row-end-5 [@media(min-width:900px)]:row-start-3 [@media(min-width:900px)]:row-end-4 flex justify-center items-center gap-3 primary-cta text-lg lg:text-xl py-3 md:py-4"
-              >
-                {isGenerating ? (
-                  <>
-                    Generating...
-                    <CircularProgress
-                      size={24}
-                      sx={{ color: "#010101" }}
-                    />
-                  </>
-                ) : (
-                  "Generate Flashcards"
-                )}
-              </button>
-            </div>
-          </>
+      <main className="flex-1 flex flex-col justify-center items-center gap-5 md:gap-10">
+        {!isLoaded ? (
+          <CircularProgress />
         ) : (
-          <div className="flex flex-col gap-4 lg:gap-6 items-center">
-            <h2 className="font-manrope font-medium text-base lg:text-lg text-off-white !leading-normal">
-              Please sign in to generate and use flashcards.
-            </h2>
+          <>
+            <h1 className="font-dela-gothic-one text-4xl lg:text-5xl !leading-none tracking-normal pb-2 text-white text-center">
+              Generate Flashcards
+            </h1>
 
-            <div className="flex justify-center gap-3">
-              <Link
-                href="/sign-in"
-                className="font-manrope font-bold -tracking-[.02em] text-base !leading-none text-white border border-pink rounded-lg py-2 px-4 lg:py-[12px] lg:px-6 ml-auto lg:ml-0"
-              >
-                Login
-              </Link>
-              <Link
-                href="/sign-up"
-                className="font-manrope font-bold -tracking-[.02em] text-base !leading-none text-white border border-pink rounded-lg py-2 px-4 lg:py-[12px] lg:px-6 ml-auto lg:ml-0"
-              >
-                Sign Up
-              </Link>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {flashcards.length > 0 && (
-        <div className="flex flex-col items-center gap-4 lg:gap-6">
-          <h2 className="font-dela-gothic-one text-3xl lg:text-4xl !leading-none tracking-normal pb-2 text-white text-center">
-            Generated Flashcards
-          </h2>
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <button
-              className="col-start-1 col-end-3 row-start-4 row-end-5 md:row-start-3 md:row-end-4 primary-cta bg-blue-gradient px-3 md:px-4 py-2 md:py-3"
-              onClick={handleOpen}
-            >
-              Save Flashcards
-            </button>
-          </Box>
-          <Grid
-            container
-            spacing={2}
-          >
-            {flashcards.map((flashcard, index) => (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={4}
-                key={index}
-              >
-                <Card sx={{ background: "transparent" }}>
-                  <CardActionArea onClick={() => handleCardClick(index)}>
-                    <CardContent sx={{ padding: "0px" }}>
-                      <Box
-                        sx={{
-                          perspective: "1000px",
-                          width: "100%",
-                          height: "220px",
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            transition: "transform 0.8s",
-                            transformStyle: "preserve-3d",
-                            position: "relative",
-                            width: "100%",
-                            height: "100%",
-                            transform: flipped[index]
-                              ? "rotateY(180deg)"
-                              : "rotateY(0deg)",
-                          }}
+            {isSignedIn ? (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 auto-rows-auto gap-5 w-full max-w-[700px]">
+                  <FormControl
+                    fullWidth
+                    variant="outlined"
+                    sx={{
+                      mb: 2,
+                      gridColumn: { xs: "1/3", md: "1/2" },
+                      gridRow: { xs: "1/2", md: "1/2" },
+                      color: "#F1F1F1",
+                    }}
+                  >
+                    <InputLabel
+                      id="language-label"
+                      sx={{ color: "#F1F1F1" }}
+                    >
+                      Select Language
+                    </InputLabel>
+                    <Select
+                      labelId="language-label"
+                      value={language}
+                      onChange={(e) => setLanguage(e.target.value)}
+                      label="Select Language"
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        height: "40px",
+                        bgcolor: "transparent",
+                        color: "#F1F1F1",
+                        paddingBlock: {
+                          xs: "20px",
+                          md: "24px",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#A385FF",
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#D668AA",
+                        },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#D668AA",
+                        },
+                      }}
+                    >
+                      {Object.entries(languages).map(([name, code]) => (
+                        <MenuItem
+                          key={code}
+                          value={code}
                         >
-                          <Box
-                            sx={{
-                              position: "absolute",
-                              width: "100%",
-                              height: "100%",
-                              backfaceVisibility: "hidden",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              padding: 2,
-                              boxSizing: "border-box",
-                              background:
-                                "url(/images/noise/noise.svg), linear-gradient(-125deg, #8864F4 14%, #D668AA 100%), linear-gradient(#A385FF, #D0C1FC)",
-                              borderRadius: {
-                                xs: "16px",
-                                md: "24px",
-                              },
-                              padding: { xs: "20px", md: "40px" },
-                            }}
-                          >
-                            <h3 className="font-dela-gothic-one text-xl lg:text-2xl !leading-none tracking-normal pb-2 text-black text-center">
-                              {flashcard.front}
-                            </h3>
-                          </Box>
-                          <Box
-                            sx={{
-                              position: "absolute",
-                              width: "100%",
-                              height: "100%",
-                              backfaceVisibility: "hidden",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              padding: 2,
-                              boxSizing: "border-box",
-                              transform: "rotateY(180deg)",
-                              background:
-                                "url(/images/noise/noise.svg), linear-gradient(-125deg, #8864F4 14%, #D668AA 100%), linear-gradient(#A385FF, #D0C1FC)",
-                              borderRadius: {
-                                xs: "16px",
-                                md: "24px",
-                              },
-                              padding: { xs: "20px", md: "40px" },
-                            }}
-                          >
-                            <h3 className="font-dela-gothic-one text-xl lg:text-2xl !leading-none tracking-normal pb-2 text-black text-center">
-                              {flashcard.back}
-                            </h3>
-                          </Box>
-                        </Box>
-                      </Box>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </div>
-      )}
+                          {name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
 
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        sx={{
-          backgroundColor: "#11111150",
-          color: "#f1f1f1",
-        }}
-        PaperProps={{
-          sx: {
-            backgroundColor: "#111111",
-            border: "1px solid #222222",
-            color: "#F1F1F1",
-            borderRadius: { xs: "16px", md: "24px" },
-          },
-        }}
-      >
-        <DialogTitle
-          sx={{
-            fontSize: "24px",
-            fontWeight: "700",
-            background: "linear-gradient(-125deg, #8864F4 14%, #D668AA 100%)",
-            color: "transparent",
-            backgroundClip: "text",
-          }}
-        >
-          Save Flashcards
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            color="#e1e1e1"
-            sx={{ mb: 1 }}
-          >
-            Enter a name for your flashcard collection.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Collection Name"
-            type="text"
-            fullWidth
-            variant="outlined"
-            sx={{
-              "& .MuiInputBase-input": {
-                color: "#e1e1e1",
-              },
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#222222",
-                borderRadius: "12px",
-              },
-              "& .MuiInputLabel-root": {
-                color: "#e1e1e1",
-              },
-            }}
-            value={name}
-            onChange={(e) => {
-              const value = e.target.value.replace(/[^a-zA-Z0-9\s-]/g, "")
-              setName(value)
-            }}
-            helperText="Use only letters, numbers, spaces, and hyphens"
-            FormHelperTextProps={{
-              sx: {
-                color: "#b3b3b3",
-              },
-            }}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleClose}
-            color="error"
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={saveFlashcards}
-            color="secondary"
-          >
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
+                  <FormControl
+                    fullWidth
+                    sx={{
+                      mb: 2,
+                      gridColumn: { xs: "1/3", md: "2/3" },
+                      gridRow: { xs: "2/3", md: "1/2" },
+                      color: "#F1F1F1",
+                    }}
+                  >
+                    <InputLabel
+                      id="difficulty-label"
+                      variant="outlined"
+                      sx={{ color: "#F1F1F1" }}
+                    >
+                      Select Difficulty
+                    </InputLabel>
+                    <Select
+                      labelId="difficulty-label"
+                      value={difficulty}
+                      onChange={(e) => setDifficulty(e.target.value)}
+                      label="Select Difficulty"
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        height: "40px",
+                        color: "#F1F1F1",
+                        bgcolor: "transparent",
+                        paddingBlock: {
+                          xs: "20px",
+                          md: "24px",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#A385FF",
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#D668AA",
+                        },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#D668AA",
+                        },
+                      }}
+                    >
+                      <MenuItem value={"A1"}>A1 - Beginner</MenuItem>
+                      <MenuItem value={"A2"}>A2 - Elementary</MenuItem>
+                      <MenuItem value={"B1"}>B1 - Intermediate</MenuItem>
+                      <MenuItem value={"B2"}>B2 - Upper Intermediate</MenuItem>
+                      <MenuItem value={"C1"}>C1 - Advanced</MenuItem>
+                      <MenuItem value={"C2"}>C2 - Proficient</MenuItem>
+                    </Select>
+                  </FormControl>
+
+                  <TextField
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    label="Enter any additional info about your level or desired cards"
+                    fullWidth
+                    multiline
+                    rows={4}
+                    variant="outlined"
+                    sx={{
+                      md: 2,
+                      bgcolor: "transparent",
+                      gridColumn: "1/3",
+                      gridRow: { xs: "3/4", md: "2/3" },
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#A385FF",
+                      },
+                      "&:hover .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#D668AA",
+                      },
+                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#D668AA",
+                      },
+                    }}
+                    InputLabelProps={{
+                      sx: {
+                        color: "#F1F1F1",
+                      },
+                    }}
+                    InputProps={{
+                      sx: {
+                        color: "#F1F1F1",
+                      },
+                    }}
+                  />
+
+                  <button
+                    onClick={handleSubmit}
+                    className="col-start-1 col-end-3 row-start-4 row-end-5 [@media(min-width:900px)]:row-start-3 [@media(min-width:900px)]:row-end-4 flex justify-center items-center gap-3 primary-cta text-lg lg:text-xl py-3 md:py-4"
+                  >
+                    {isGenerating ? (
+                      <>
+                        Generating...
+                        <CircularProgress
+                          size={24}
+                          sx={{ color: "#010101" }}
+                        />
+                      </>
+                    ) : (
+                      "Generate Flashcards"
+                    )}
+                  </button>
+                </div>
+                {flashcards.length > 0 && (
+                  <div className="flex flex-col items-center gap-4 lg:gap-6">
+                    <h2 className="font-dela-gothic-one text-3xl lg:text-4xl !leading-none tracking-normal pb-2 text-white text-center">
+                      Generated Flashcards
+                    </h2>
+                    <Box sx={{ display: "flex", justifyContent: "center" }}>
+                      <button
+                        className="col-start-1 col-end-3 row-start-4 row-end-5 md:row-start-3 md:row-end-4 primary-cta bg-blue-gradient px-3 md:px-4 py-2 md:py-3"
+                        onClick={handleOpen}
+                      >
+                        Save Flashcards
+                      </button>
+                    </Box>
+                    <Grid
+                      container
+                      spacing={2}
+                    >
+                      {flashcards.map((flashcard, index) => (
+                        <Grid
+                          item
+                          xs={12}
+                          sm={6}
+                          md={4}
+                          key={index}
+                        >
+                          <Card sx={{ background: "transparent" }}>
+                            <CardActionArea
+                              onClick={() => handleCardClick(index)}
+                            >
+                              <CardContent sx={{ padding: "0px" }}>
+                                <Box
+                                  sx={{
+                                    perspective: "1000px",
+                                    width: "100%",
+                                    height: "220px",
+                                  }}
+                                >
+                                  <Box
+                                    sx={{
+                                      transition: "transform 0.8s",
+                                      transformStyle: "preserve-3d",
+                                      position: "relative",
+                                      width: "100%",
+                                      height: "100%",
+                                      transform: flipped[index]
+                                        ? "rotateY(180deg)"
+                                        : "rotateY(0deg)",
+                                    }}
+                                  >
+                                    <Box
+                                      sx={{
+                                        position: "absolute",
+                                        width: "100%",
+                                        height: "100%",
+                                        backfaceVisibility: "hidden",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        padding: 2,
+                                        boxSizing: "border-box",
+                                        background:
+                                          "url(/images/noise/noise.svg), linear-gradient(-125deg, #8864F4 14%, #D668AA 100%), linear-gradient(#A385FF, #D0C1FC)",
+                                        borderRadius: {
+                                          xs: "16px",
+                                          md: "24px",
+                                        },
+                                        padding: { xs: "20px", md: "40px" },
+                                      }}
+                                    >
+                                      <h3 className="font-dela-gothic-one text-xl lg:text-2xl !leading-none tracking-normal pb-2 text-black text-center">
+                                        {flashcard.front}
+                                      </h3>
+                                    </Box>
+                                    <Box
+                                      sx={{
+                                        position: "absolute",
+                                        width: "100%",
+                                        height: "100%",
+                                        backfaceVisibility: "hidden",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        padding: 2,
+                                        boxSizing: "border-box",
+                                        transform: "rotateY(180deg)",
+                                        background:
+                                          "url(/images/noise/noise.svg), linear-gradient(-125deg, #8864F4 14%, #D668AA 100%), linear-gradient(#A385FF, #D0C1FC)",
+                                        borderRadius: {
+                                          xs: "16px",
+                                          md: "24px",
+                                        },
+                                        padding: { xs: "20px", md: "40px" },
+                                      }}
+                                    >
+                                      <h3 className="font-dela-gothic-one text-xl lg:text-2xl !leading-none tracking-normal pb-2 text-black text-center">
+                                        {flashcard.back}
+                                      </h3>
+                                    </Box>
+                                  </Box>
+                                </Box>
+                              </CardContent>
+                            </CardActionArea>
+                          </Card>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </div>
+                )}
+
+                <Dialog
+                  open={open}
+                  onClose={handleClose}
+                  sx={{
+                    backgroundColor: "#11111150",
+                    color: "#f1f1f1",
+                  }}
+                  PaperProps={{
+                    sx: {
+                      backgroundColor: "#111111",
+                      border: "1px solid #222222",
+                      color: "#F1F1F1",
+                      borderRadius: { xs: "16px", md: "24px" },
+                    },
+                  }}
+                >
+                  <DialogTitle
+                    sx={{
+                      fontSize: "24px",
+                      fontWeight: "700",
+                      background:
+                        "linear-gradient(-125deg, #8864F4 14%, #D668AA 100%)",
+                      color: "transparent",
+                      backgroundClip: "text",
+                    }}
+                  >
+                    Save Flashcards
+                  </DialogTitle>
+                  <DialogContent>
+                    <DialogContentText
+                      color="#e1e1e1"
+                      sx={{ mb: 1 }}
+                    >
+                      Enter a name for your flashcard collection.
+                    </DialogContentText>
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id="name"
+                      label="Collection Name"
+                      type="text"
+                      fullWidth
+                      variant="outlined"
+                      sx={{
+                        "& .MuiInputBase-input": {
+                          color: "#e1e1e1",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#222222",
+                          borderRadius: "12px",
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "#e1e1e1",
+                        },
+                      }}
+                      value={name}
+                      onChange={(e) => {
+                        const value = e.target.value.replace(
+                          /[^a-zA-Z0-9\s-]/g,
+                          ""
+                        )
+                        setName(value)
+                      }}
+                      helperText="Use only letters, numbers, spaces, and hyphens"
+                      FormHelperTextProps={{
+                        sx: {
+                          color: "#b3b3b3",
+                        },
+                      }}
+                    />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      onClick={handleClose}
+                      color="error"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={saveFlashcards}
+                      color="secondary"
+                    >
+                      Save
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </>
+            ) : (
+              <div className="flex flex-col gap-4 lg:gap-6 items-center">
+                <h2 className="font-manrope font-medium text-base lg:text-lg text-off-white !leading-normal">
+                  Please sign in to generate and use flashcards.
+                </h2>
+
+                <div className="flex justify-center gap-3">
+                  <Link
+                    href="/sign-in"
+                    className="font-manrope font-bold -tracking-[.02em] text-base !leading-none text-white border border-pink rounded-lg py-2 px-4 lg:py-[12px] lg:px-6 ml-auto lg:ml-0"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href="/sign-up"
+                    className="font-manrope font-bold -tracking-[.02em] text-base !leading-none text-white border border-pink rounded-lg py-2 px-4 lg:py-[12px] lg:px-6 ml-auto lg:ml-0"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </main>
     </div>
   )
 }
