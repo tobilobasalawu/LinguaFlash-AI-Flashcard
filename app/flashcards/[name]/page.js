@@ -70,23 +70,14 @@ export default function FlashcardSet() {
             md={4}
             key={index}
           >
-            <Card
-              sx={{
-                background:
-                  "url(/images/noise/noise.svg), linear-gradient(-125deg, #8864F4 14%, #D668AA 100%), linear-gradient(#A385FF, #D0C1FC)",
-                borderRadius: {
-                  xs: "16px",
-                  md: "24px",
-                },
-                padding: { xs: "20px", md: "40px" },
-              }}
-            >
+            <Card sx={{ background: "transparent" }}>
               <CardActionArea onClick={() => handleCardClick(index)}>
-                <CardContent>
+                <CardContent sx={{ padding: "0px" }}>
                   <Box
                     sx={{
                       perspective: "1000px",
-                      height: "160px",
+                      width: "100%",
+                      height: "220px",
                     }}
                   >
                     <Box
@@ -112,6 +103,13 @@ export default function FlashcardSet() {
                           justifyContent: "center",
                           padding: 2,
                           boxSizing: "border-box",
+                          background:
+                            "url(/images/noise/noise.svg), linear-gradient(-125deg, #8864F4 14%, #D668AA 100%), linear-gradient(#A385FF, #D0C1FC)",
+                          borderRadius: {
+                            xs: "16px",
+                            md: "24px",
+                          },
+                          padding: { xs: "20px", md: "40px" },
                         }}
                       >
                         <h3 className="font-dela-gothic-one text-xl lg:text-2xl !leading-none tracking-normal pb-2 text-black text-center">
@@ -130,6 +128,13 @@ export default function FlashcardSet() {
                           padding: 2,
                           boxSizing: "border-box",
                           transform: "rotateY(180deg)",
+                          background:
+                            "url(/images/noise/noise.svg), linear-gradient(-125deg, #8864F4 14%, #D668AA 100%), linear-gradient(#A385FF, #D0C1FC)",
+                          borderRadius: {
+                            xs: "16px",
+                            md: "24px",
+                          },
+                          padding: { xs: "20px", md: "40px" },
                         }}
                       >
                         <h3 className="font-dela-gothic-one text-xl lg:text-2xl !leading-none tracking-normal pb-2 text-black text-center">

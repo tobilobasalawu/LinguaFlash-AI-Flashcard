@@ -13,6 +13,7 @@ export default function Flashcard() {
   const { userId } = useAuth()
   const [flashcards, setFlashcards] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
+  const name = user.firstName || user.lastName
 
   useEffect(() => {
     async function fetchFlashcards() {
@@ -70,41 +71,49 @@ export default function Flashcard() {
     <div className="flex flex-col gap-20 min-h-svh px-5 md:px-10 py-20 pt-[93px] lg:pt-[109px] pb-20">
       <Header />
       <div className="flex-1 flex flex-col items-center gap-5 md:gap-10">
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder="Search flashcards..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-          sx={{
-            mt: 2,
-            mb: 2,
-            color: "#F1F1F1",
-            bgcolor: "transparent",
-            paddingBlock: {
-              xs: "20px",
-              md: "24px",
-            },
-            width: {
-              xs: "100%",
-            },
-            maxWidth: {
-              md: "600px",
-            },
-            "& .MuiInputBase-input": {
-              color: "#f1f1f1",
-            },
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#A385FF",
-            },
-            "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#D668AA",
-            },
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#D668AA",
-            },
-          }}
-        />
+        <div className="flex-none flex flex-col md:flex-row md:items-center justify-between w-full">
+          <h1 className="w-full md:w-1/2 font-dela-gothic-one text-4xl lg:text-5xl md:text-center !leading-none tracking-normal pb-2 text-white">
+            {name}'s flashcards{" "}
+          </h1>
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Search flashcards..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            sx={{
+              mt: 2,
+              mb: 2,
+              color: "#F1F1F1",
+              bgcolor: "transparent",
+              paddingBlock: {
+                xs: "20px",
+                md: "24px",
+              },
+              width: {
+                xs: "100%",
+                md: "40%",
+              },
+              maxWidth: {
+                md: "600px",
+              },
+              "& .MuiInputBase-input": {
+                color: "#f1f1f1",
+              },
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#A385FF",
+                borderRadius: "16px",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#D668AA",
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#D668AA",
+              },
+            }}
+          />
+        </div>
+
         {filteredFlashcards.length === 0 ? (
           <div className="flex flex-col items-center gap-5 md:gap-10">
             <h1 className="mt-8 text-center text-off-white text-3xl">
@@ -124,7 +133,7 @@ export default function Flashcard() {
           <div className="flex flex-wrap justify-center md:justify-start gap-12 md:gap-10 w-full">
             {filteredFlashcards.map((flashcard, index) => (
               <div
-                className="group relative w-full flex-grow md:flex-grow-0 md:w-[300px] lg:w-[425px] h-[240px]"
+                className="group relative w-full flex-grow md:flex-grow-0 md:w-[300px] lg:w-[390px] h-[240px]"
                 key={index}
               >
                 <button
@@ -149,10 +158,10 @@ export default function Flashcard() {
                 <div className="relative z-10">
                   <Link href={`/flashcards/${flashcard.name}`}>
                     <div className="relative grid grid-cols-1 grid-rows-1 auto-rows-auto">
-                      <div className="col-start-1 col-end-2 row-start-1 row-end-1 -rotate-[1.8deg] opacity-30 bg-blue w-full flex-grow md:flex-grow-0 md:w-[300px] lg:w-[425px] h-[240px] rounded-3xl"></div>
-                      <div className="col-start-1 col-end-2 row-start-1 row-end-1 rotate-[4.5deg] opacity-30 bg-blue w-full flex-grow md:flex-grow-0 md:w-[300px] lg:w-[425px] h-[240px] rounded-3xl"></div>
-                      <div className="relative grid place-content-center col-start-1 col-end-2 row-start-1 row-end-1 rotate-[1.5deg] bg-noisy-card w-full flex-grow md:flex-grow-0 md:w-[300px] lg:w-[425px] h-[240px] rounded-3xl">
-                        <p className="font-dela-gothic-one text-4xl text-black">
+                      <div className="col-start-1 col-end-2 row-start-1 row-end-1 -rotate-[1.8deg] opacity-30 bg-blue w-full flex-grow md:flex-grow-0 md:w-[300px] lg:w-[390px] h-[240px] rounded-3xl"></div>
+                      <div className="col-start-1 col-end-2 row-start-1 row-end-1 rotate-[4.5deg] opacity-30 bg-blue w-full flex-grow md:flex-grow-0 md:w-[300px] lg:w-[390px] h-[240px] rounded-3xl"></div>
+                      <div className="relative grid place-content-center col-start-1 col-end-2 row-start-1 px-5 md:px-10 row-end-1 rotate-[1.5deg] bg-noisy-card w-full flex-grow md:flex-grow-0 md:w-[300px] lg:w-[390px] h-[240px] rounded-3xl">
+                        <p className="font-dela-gothic-one text-4xl text-black line-clamp-2 text-center">
                           {flashcard.name}
                         </p>
                       </div>
