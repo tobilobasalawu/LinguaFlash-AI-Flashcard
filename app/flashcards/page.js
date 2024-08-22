@@ -92,7 +92,7 @@ export default function Flashcard() {
           <>
             <div className="flex-none flex flex-col md:flex-row md:items-center justify-between w-full">
               <h1 className="w-full md:w-1/2 font-dela-gothic-one text-4xl lg:text-5xl !leading-[120%] tracking-normal pb-2 text-white">
-                {name}'s flashcards{" "}
+                {name}&apos;s flashcards{" "}
               </h1>
               <TextField
                 fullWidth
