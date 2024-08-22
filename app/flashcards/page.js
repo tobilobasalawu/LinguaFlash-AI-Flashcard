@@ -79,12 +79,12 @@ export default function Flashcard() {
   }
 
   return (
-    <div className="flex flex-col min-h-svh px-5 md:px-10 py-20  pt-[113px] lg:pt-[129px] pb-20">
+    <div className="flex flex-col min-h-svh">
       <Header />
       <main
         className={`flex-1 flex flex-col ${
           !flashcards ? "justify-center" : ""
-        } items-center gap-5 md:gap-7`}
+        } items-center gap-5 md:gap-7 px-5 md:px-10 py-20  pt-[113px] lg:pt-[129px] pb-20`}
       >
         {!flashcards ? (
           <CircularProgress size={40} />

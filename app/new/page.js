@@ -135,10 +135,10 @@ export default function Generate() {
   }
 
   return (
-    <div className="flex flex-col gap-20 min-h-svh px-5 md:px-10 py-20  pt-[153px] lg:pt-[169px] pb-20">
+    <div className="flex flex-col min-h-svh">
       <Header />
 
-      <main className="flex-1 flex flex-col justify-center items-center gap-5 md:gap-10">
+      <main className="flex-1 flex flex-col justify-center items-center gap-5 md:gap-10 px-5 md:px-10 py-20 pb-20 pt-[153px] lg:pt-[169px]">
         {!isLoaded ? (
           <CircularProgress />
         ) : (
