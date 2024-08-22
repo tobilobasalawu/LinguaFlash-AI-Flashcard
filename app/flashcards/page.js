@@ -2,7 +2,14 @@
 
 import { useState, useEffect } from "react"
 import { useAuth, useUser } from "@clerk/nextjs"
-import { doc, collection, getDoc, setDoc, writeBatch } from "firebase/firestore"
+import {
+  doc,
+  collection,
+  getDoc,
+  setDoc,
+  writeBatch,
+  onSnapshot,
+} from "firebase/firestore"
 import { TextField, CircularProgress } from "@mui/material"
 import { db } from "@/firebase"
 import Header from "@/components/Header"
@@ -16,21 +23,28 @@ export default function Flashcard() {
   const name = userId && (user.firstName || user.lastName)
 
   useEffect(() => {
-    async function fetchFlashcards() {
-      if (!userId) return
+    if (!userId) return
 
-      const docRef = doc(collection(db, "users"), userId)
-      const docSnap = await getDoc(docRef)
+    const docRef = doc(collection(db, "users"), userId)
 
-      if (docSnap.exists()) {
-        const collections = docSnap.data().flashcards || []
-        setFlashcards(collections)
-      } else {
-        await setDoc(docRef, { flashcards: [] })
+    const unsubscribe = onSnapshot(
+      docRef,
+      (docSnap) => {
+        if (docSnap.exists()) {
+          const collections = docSnap.data().flashcards || []
+          setFlashcards(collections)
+        } else {
+          setDoc(docRef, { flashcards: [] })
+          setFlashcards([])
+        }
+      },
+      (error) => {
+        alert("Error fetching flashcards:", error)
         setFlashcards([])
       }
-    }
-    fetchFlashcards()
+    )
+
+    return () => unsubscribe()
   }, [userId])
 
   const handleSearchChange = (event) => {
@@ -59,22 +73,25 @@ export default function Flashcard() {
 
       batch.set(userDocRef, { flashcards: updatedCollections }, { merge: true })
       await batch.commit()
-      alert("Collection deleted successfully.")
     } else {
       alert("Unable to delete collection, please try again later.")
     }
   }
 
   return (
-    <div className="flex flex-col gap-20 min-h-svh px-5 md:px-10 py-20  pt-[153px] lg:pt-[169px] pb-20">
+    <div className="flex flex-col min-h-svh px-5 md:px-10 py-20  pt-[113px] lg:pt-[129px] pb-20">
       <Header />
-      <main className="flex-1 flex flex-col justify-center items-center gap-5 md:gap-10">
+      <main
+        className={`flex-1 flex flex-col ${
+          !flashcards ? "justify-center" : ""
+        } items-center gap-5 md:gap-7`}
+      >
         {!flashcards ? (
           <CircularProgress size={40} />
         ) : (
           <>
             <div className="flex-none flex flex-col md:flex-row md:items-center justify-between w-full">
-              <h1 className="w-full md:w-1/2 font-dela-gothic-one text-4xl lg:text-5xl md:text-center !leading-[120%] tracking-normal pb-2 text-white">
+              <h1 className="w-full md:w-1/2 font-dela-gothic-one text-4xl lg:text-5xl !leading-[120%] tracking-normal pb-2 text-white">
                 {name}'s flashcards{" "}
               </h1>
               <TextField
@@ -116,7 +133,7 @@ export default function Flashcard() {
             </div>
 
             {filteredFlashcards && filteredFlashcards.length === 0 ? (
-              <div className="flex flex-col items-center gap-5 md:gap-10">
+              <div className="flex-1 flex flex-col justify-center items-center gap-5 md:gap-10">
                 <h1 className="font-manrope mt-8 text-center text-off-white text-xl lg:text-2xl">
                   {flashcards.length === 0
                     ? "You don't have any flashcards yet. Create some to get started!"

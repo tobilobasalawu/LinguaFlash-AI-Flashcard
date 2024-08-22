@@ -35,7 +35,7 @@ export default function FlashcardSet() {
         setFlashcardSet(flashcards)
         setFlipped(new Array(flashcards.length).fill(false))
       } catch (error) {
-        console.error("Error fetching flashcards:", error)
+        alert("Error fetching flashcards:", error)
         setFlashcardSet([])
       }
     }
@@ -51,9 +51,9 @@ export default function FlashcardSet() {
   }
 
   return (
-    <div className="flex flex-col gap-10 min-h-svh px-5 md:px-10 py-20 pt-[153px] lg:pt-[169px] pb-20">
+    <div className="flex flex-col gap-10 min-h-svh px-5 md:px-10 py-20 pt-[113px] lg:pt-[129px] pb-20">
       <Header />
-      <main className="flex-1 flex flex-col justify-center items-center gap-5 md:gap-10">
+      <main className="flex-1 flex flex-col justify-center items-center gap-5 md:gap-7">
         {!flashcardSet ? (
           <CircularProgress size={40} />
         ) : flashcardSet && flashcardSet.length === 0 ? (
