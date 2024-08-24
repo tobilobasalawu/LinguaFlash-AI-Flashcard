@@ -14,13 +14,11 @@
     "@emotion/styled": "^11.13.0",
     "@google/generative-ai": "^0.17.0",
     "@mui/material": "^5.16.7",
-    "file-loader": "^6.2.0",
     "firebase": "^10.12.5",
     "next": "14.2.5",
     "openai": "^4.55.7",
     "react": "^18",
-    "react-dom": "^18",
-    "stripe": "^16.7.0"
+    "react-dom": "^18"
   },
   "devDependencies": {
     "eslint": "^8",
